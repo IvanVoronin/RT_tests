@@ -22,18 +22,14 @@ This file starts the test
 
 import os
 import sys
-sys.path.append(os.path.dirname(__file__) + '/tests')
-#sys.path.append('/home/ivanvoronin/P-files/2018-09-04-RT_grant/RT_tests/tests')
 
+import UserList, UserString
 from datetime import datetime
-from psychopy import gui, core, visual
+from psychopy import gui, core
 from testlist import test_battery
 
-#reload(sys)
-#sys.setdefaultencoding("utf-8")
-#HOME_FOLDER = os.path.dirname(__file__)
-#HOME_FOLDER = '/home/ivanvoronin/P-files/2018-09-04-RT_grant/RT_tests'
-#os.chdir(HOME_FOLDER)
+HOME_FOLDER = os.path.dirname(__file__)
+os.chdir(HOME_FOLDER)
 
 # Make folders and attach output table
 if not os.access('data', os.F_OK):
@@ -41,45 +37,45 @@ if not os.access('data', os.F_OK):
 else:
     if (os.path.isfile('data/participants.csv')):
         try:
-            out_file = open('data/participants.csv', mode = 'a') 
+            out_file = open('data/participants.csv', mode='a')
         except:
             print('The directory is not writable, cannot write the data')
     else:
-        out_file = open('data/participants.csv', mode = 'w')
+        out_file = open('data/participants.csv', mode='w')
         out_file.write('test_mode;id;name;age;sex;status;start_time;end_time;')
         for i in test_battery:
-            out_file.write(i + '_status;' +\
-                          i + '_start_time;' + \
-                          i + '_end_time;')
+            out_file.write(i + '_status;' + \
+                           i + '_start_time;' + \
+                           i + '_end_time;')
         out_file.write('\n')
 
-#background = visual.Window(fullscr=True, units='pix',
+# background = visual.Window(fullscr=True, units='pix',
 #                           screen=1, winType='pyglet')
 # Show the ID questionnaire
-info_dlg = gui.Dlg(title = u'Начать эксперимент')
+info_dlg = gui.Dlg(title=u'Начать эксперимент')
 
-#.decode('utf-8')
+# .decode('utf-8')
 info_dlg.addField(u'ID:', u'0001')
 info_dlg.addField(u'Имя:', u'Иван Дурак')
 info_dlg.addField(u'Дата рождения:', '01.01.1990')
-info_dlg.addField(u'Пол:', choices = [u'Мужской',
-                                      u'Женский'])
+info_dlg.addField(u'Пол:', choices=[u'Мужской',
+                                    u'Женский'])
 
-info_dlg.addField(u'Режим теста:', choices = [u'Демо',
-                                              u'Полный'])
-    
+info_dlg.addField(u'Режим теста:', choices=[u'Демо',
+                                            u'Полный'])
+
 info_dlg.addField(u'Я согласен/согласна участвовать', True)
 
 info_dlg.addText(u'\nВыберите тесты для выполнения')
 for i in test_battery.keys():
     info_dlg.addField(i, True)
-    
+
 info_dlg.show()
 
 if not info_dlg.OK:
     # No need for a status here as there is no data record
     core.wait(1)
-#    background.close()
+    #    background.close()
     core.quit()
     sys.exit(0)
 
@@ -89,7 +85,7 @@ START_TIME = datetime.now()
 
 if not agr:
     core.wait(1)
-#    background.close()
+    #    background.close()
     core.quit()
     sys.exit(0)
 
@@ -109,7 +105,7 @@ for test, run in zip(test_battery.values(), run_tests):
 for test in test_battery.itervalues():
     if test.status != 'skipped':
         try:
-            test.start(out_dir, mode = test_mode)
+            test.start(out_dir, mode=test_mode)
         except Exception:
             test.status = 'failed'
             test.end_time = datetime.now()
@@ -125,20 +121,20 @@ BAT_STATUS = all([test.status == 'complete' for test in test_battery.values()])
 # TODO: Write log-file for each test
 
 out_file.write(('complete' if BAT_STATUS else 'incomplete') + ';' + \
-              START_TIME.strftime('%Y-%m-%d %H:%M:%S') + ';' + \
-              END_TIME.strftime('%Y-%m-%d %H:%M:%S') + ';')
+               START_TIME.strftime('%Y-%m-%d %H:%M:%S') + ';' + \
+               END_TIME.strftime('%Y-%m-%d %H:%M:%S') + ';')
 for test in test_battery.itervalues():
     out_file.write(test.status + ';' + \
-                  test.start_time.strftime('%Y-%m-%d %H:%M:%S') + ';' + \
-                  test.end_time.strftime('%Y-%m-%d %H:%M:%S') + ';')
+                   test.start_time.strftime('%Y-%m-%d %H:%M:%S') + ';' + \
+                   test.end_time.strftime('%Y-%m-%d %H:%M:%S') + ';')
 out_file.write('\n')
 out_file.close()
 
-#debriefing = visual.TextStim(background,
+# debriefing = visual.TextStim(background,
 #                             text = u'Благодарим за участие в исследовании!',
 #                             pos = [0,0])
-#debriefing.draw()
-#background.flip()
+# debriefing.draw()
+# background.flip()
 core.wait(2)
-#background.close()
+# background.close()
 core.quit()

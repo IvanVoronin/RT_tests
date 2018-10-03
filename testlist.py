@@ -2,22 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from collections import OrderedDict
-
-import os
-import sys
-sys.path.append(os.path.dirname(__file__) + '/tests')
-
-import SRT
-import CRT2
-import CRT4
-import VerbCRT
-import stroop2_1
-import stroop2_2
-import stroop3_1
-import stroop3_2
-import VisCRT
-import SRT_rel
-import CRT2_rel 
+from tests import SRT, CRT2, CRT4, VerbCRT
+from tests import stroop2_1, stroop2_2, stroop3_1, stroop3_2
+from tests import VisCRT, SRT_rel, CRT2_rel
 
 test_battery = OrderedDict([
     ('SRT', SRT.SRT()),
