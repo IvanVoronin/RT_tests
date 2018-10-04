@@ -26,28 +26,35 @@ import sys
 import UserList, UserString
 from datetime import datetime
 from psychopy import gui, core
+
 from testlist import test_battery
 
-HOME_FOLDER = os.path.dirname(__file__)
+if getattr(sys, 'frozen', False):
+        # we are running in a bundle
+        HOME_FOLDER = os.path.dirname(sys.executable)
+else:
+        # we are running in a normal Python environment
+        HOME_FOLDER = os.path.dirname(os.path.abspath(__file__))
+
 os.chdir(HOME_FOLDER)
 
 # Make folders and attach output table
 if not os.access('data', os.F_OK):
     os.mkdir('data')
+
+if os.path.isfile('data/participants.csv'):
+    try:
+        out_file = open('data/participants.csv', mode='a')
+    except:
+        print('The directory is not writable, cannot write the data')
 else:
-    if (os.path.isfile('data/participants.csv')):
-        try:
-            out_file = open('data/participants.csv', mode='a')
-        except:
-            print('The directory is not writable, cannot write the data')
-    else:
-        out_file = open('data/participants.csv', mode='w')
-        out_file.write('test_mode;id;name;age;sex;status;start_time;end_time;')
-        for i in test_battery:
-            out_file.write(i + '_status;' + \
-                           i + '_start_time;' + \
-                           i + '_end_time;')
-        out_file.write('\n')
+    out_file = open('data/participants.csv', mode='w')
+    out_file.write('test_mode;id;name;age;sex;status;start_time;end_time;')
+    for i in test_battery:
+        out_file.write(i + '_status;' + \
+                       i + '_start_time;' + \
+                       i + '_end_time;')
+    out_file.write('\n')
 
 # background = visual.Window(fullscr=True, units='pix',
 #                           screen=1, winType='pyglet')

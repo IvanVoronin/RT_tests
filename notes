@@ -1,0 +1,13 @@
+  File "c:\program files (x86)\psychopy2\lib\site-packages\PyInstaller\hooks\pre_safe_import_module\hook-setuptools.extern.six.moves.py", line 34, in pre_safe_import_module
+    for real_module_name, six_module_name in real_to_six_module_name.items():
+
+Upgrade setuptools:
+python -m pip install --upgrade setuptools
+
+
+  File "c:\program files (x86)\psychopy2\lib\site-packages\cffi\api.py", line 340, in from_buffer
+    return self._backend.from_buffer(self.BCharA, python_buffer)
+TypeError: from_buffer() cannot return the address of the raw string within a str or unicode or bytearray object
+
+Upgrade cffi
+python -m pip install --upgrade cffi

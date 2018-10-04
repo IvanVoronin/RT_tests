@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from psychopy import visual, iohub, data, core
+import psychopy.iohub.devices.display
 from numpy import random
 from datetime import datetime
 from collections import OrderedDict
@@ -74,7 +75,10 @@ class CogTest:
 
         # Initialize keyboard input
         self.io = iohub.launchHubServer()
-        self.keyboard = self.io.devices.keyboard
+        self.keyboard = iohub.devices.keyboard
+
+        # FIXME: The pointer does not disappear
+        self.test_screen.setMouseVisible(False)
         
     def init_attr(self):
         # Validity checks
