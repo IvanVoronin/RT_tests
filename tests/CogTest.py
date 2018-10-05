@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from psychopy import visual, iohub, data, core
-import psychopy.iohub.devices.display
 from numpy import random
 from datetime import datetime
 from collections import OrderedDict
@@ -69,13 +68,16 @@ class CogTest:
         # Initialize test screen
         # TODO: Measure and record actual frame rate getActuralFrameRate()
         #       getMsPerFrame()
-        self.test_screen = visual.Window(fullscr=True, units='pix',
+
+        self.test_screen = visual.Window(fullscr=False, units='pix',
                                          screen=1, winType='pyglet')        
         self.test_screen.winHandle.activate()
 
         # Initialize keyboard input
+
+#        self.io = iohub.launchHubServer(iohub_config_name='iohub_config.yaml')
         self.io = iohub.launchHubServer()
-        self.keyboard = iohub.devices.keyboard
+        self.keyboard = self.io.devices.keyboard
 
         # FIXME: The pointer does not disappear
         self.test_screen.setMouseVisible(False)

@@ -2,9 +2,9 @@
 
 block_cipher = None
 
-added_files = [('pics', '.'),
-               ('stimuli', '.')
-               ]
+added_files = [('pics', 'pics'),
+               ('stimuli', 'stimuli'),
+               ('iohub_config.yaml', '.')]
 
 a = Analysis(['launch.py'],
              pathex=['S:\\Ivan\\RT_tests'],
@@ -22,14 +22,18 @@ pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
           a.scripts,
-          a.binaries,
-          a.zipfiles,
-          a.datas,
           [],
-          name='RT_tests',
+          exclude_binaries=True,
+          name='launch',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          runtime_tmpdir=None,
           console=True )
+coll = COLLECT(exe,
+               a.binaries,
+               a.zipfiles,
+               a.datas,
+               strip=False,
+               upx=True,
+               name='launch')
