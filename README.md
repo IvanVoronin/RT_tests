@@ -43,7 +43,7 @@ _CRT2_rel:_ participant has to hold D or L and release one as a response to the 
 
 Requirements
 ============
-The implementation is based on PsychoPy. The stand-alone version of PsychoPy (v.1.90.3, or PsychoPy2) is supposedly sufficient. PsychoPy2 requires fully finctional OpenGL driver (details [here][requirements]).
+The implementation is based on PsychoPy. The stand-alone version of PsychoPy (v.1.90.3, or PsychoPy2) is supposedly sufficient. PsychoPy2 requires fully finctional OpenGL 2.0 (details [here][requirements]).
 
 [requirements]: http://psychopy.org/installation.html
 
