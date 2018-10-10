@@ -3,8 +3,8 @@ This is Reaction Time test battery
 
 This test battery is implemented for assessment of the individual differences in response time across various decision tasks: simple and choice reaction time (SRT, CRT2, CRT4, SRT_rel, CRT2_rel), Stroop task with two and three colors (stroop2_1, stroop2_2, stroop3_1, stroop3_2), verbal classification (VerbCRT) and visuo-spatial classification (VisCRT).
 
-_Quick start:_ 
-bash/cmd: python launch.py
+_Quick start:_  
+bash/cmd: python launch.py  
 also: launch.bat (either starts an experiment or suggest to install PsychoPy2 if Python is not installed)
 
 This battery aims to serve as a self-contained software to be used for assessment at school. At the same time it simplifies development of the tests and allows modification of test workflow across the whole test battery. It includes following functionality:
@@ -15,7 +15,7 @@ This battery aims to serve as a self-contained software to be used for assessmen
 5. Each 40 trials the script pauses to let a participant have a short break (6s).
 6. The timestamps and execution status are recorded for each test and for the whole test battery.
 
-The specifications --- like number of trials, minimum number of correct answers, maximum subsequence of invalid answers and non response time --- are defined within parent classes and can be adjusted for each test separately. 
+The specifications --- like number of trials, minimum number of correct answers, maximum subsequence of invalid answers and non response time --- are defined within parent classes and can be adjusted for each test separately (by overriding in child class). 
 
 Description of tests
 ====================
