@@ -1,0 +1,1 @@
+psychopy.iohub.IO_HUB_DIRECTORY = os.path.dirname(sys.executable) + "/psychopy/iohub"

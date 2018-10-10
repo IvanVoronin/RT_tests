@@ -76,11 +76,14 @@ class CogTest:
         # Initialize test screen
         # TODO: Measure and record actual frame rate getActualFrameRate()
         #       getMsPerFrame()
-        self.test_screen = visual.Window(fullscr=True, units='pix',
+
+        self.test_screen = visual.Window(fullscr=False, units='pix',
                                          screen=1, winType='pyglet')        
         self.test_screen.winHandle.activate()
 
         # Initialize keyboard input
+
+#        self.io = iohub.launchHubServer(iohub_config_name='iohub_config.yaml')
         self.io = iohub.launchHubServer()
         self.keyboard = self.io.devices.keyboard
 
