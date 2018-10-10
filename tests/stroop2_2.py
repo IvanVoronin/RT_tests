@@ -5,47 +5,34 @@ from CogTest import CogTest, GoOn
 from psychopy import visual
 from collections import OrderedDict
 from random import choice
+import os
 
-
-# import os
-# HOME_FOLDER = '/home/ivanvoronin/P-files/2018-09-04-RT_grant/RT_tests'
-# os.chdir(HOME_FOLDER)
-
-'''
-I adjust the colors for perceived luminocity using the formula:
-def lum (R, G, B): 
-    return sqrt(0.299*R*R + 0.587*G*G + 0.114*B*B)/255
-I choose 0.338 as a baseline luminocity (red color)
-red   = [255,   0,   0],
-green = [  0, 200,   0],
-blue  = [  0, 100, 255]}
-Refs: 
- - http://alienryderflex.com/hsp.html
- - https://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
-'''
+# I adjust the colors for perceived luminocity using the formula:
+# def lum (R, G, B):
+#     return sqrt(0.299*R*R + 0.587*G*G + 0.114*B*B)/255
+# I choose 0.338 as a baseline luminocity (red color)
+# red   = [255,   0,   0],
+# green = [  0, 200,   0],
+# blue  = [  0, 100, 255]}
+# Refs:
+#  - http://alienryderflex.com/hsp.html
+#  - https://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
 
 
 class stroop2_2 (CogTest):
     name = 'stroop2_2'
-    nreps = 40
+    nreps = 40          # number of repeats within each trial dictionary
 
-    maxtrials = 10000 # maximum number of trials in the main test
-    mintrain = 5      # number of correct training responses to start main test
-    maxtrain = 20     # maximum length of training series
-
-    ndemo = 20        # number of trials in demo version of the test
-
-    breaktrials = 40  # make a break after this number of trials
-    breaktime = 6     # length of the break (sec)
-    
-    mincorrect = 0.3      # maximum percent of incorrect responses
-    maxinvalidstrike = 10   # interrupt the test when the this number of consecutive responses is invalid
-    nonresptime = 5         # maximum nonresponse time (sec)
+    nonresptime = 5     # maximum non-response time (sec)
     
     colors = {'red':   [230,   0,   0],
               'green': [  0, 170,   0],
               'blue':  [  0, 100, 255]}
-    
+
+    # This is trial dictionary passed to data.TrialHandler
+    # Must contain training series
+    # Each series must contain 'cor_resp' which is correct response
+    # (key on a keyboard)
     trial_dict = OrderedDict(
         [('training', [{'word': u'КРАСНЫЙ', 'color': 'red',   'cor_resp': 'd', 'type': 'congr'},
                        {'word': u'ЗЕЛЁНЫЙ', 'color': 'green', 'cor_resp': 'l', 'type': 'congr'},
@@ -56,6 +43,9 @@ class stroop2_2 (CogTest):
                        {'word': u'КРАСНЫЙ', 'color': 'green', 'cor_resp': 'l', 'type': 'incongr'},
                        {'word': u'ЗЕЛЁНЫЙ', 'color': 'red',   'cor_resp': 'd', 'type': 'incongr'}])])
 
+    # You are welcome to change this for CogTest instances
+    # Here you define all test stimuli
+    # The fixation stimulus must be present
     def init_trial_stimuli(self):
         self.trial_stimuli = {
             # Fixation stimulus indicating start of the trial
@@ -64,7 +54,7 @@ class stroop2_2 (CogTest):
                                  pos=[0, 0], lineColor='white',
                                  closeShape=False,
                                  vertices=((0, -10), (0, 10), (0, 0),
-                                             (-10, 0), (10, 0))),
+                                           (-10, 0), (10, 0))),
             # Trial stimuli
             'word':
                 visual.TextStim(self.test_screen, 
@@ -94,22 +84,27 @@ class stroop2_2 (CogTest):
                             lineColor='white',
                             pos=[200, 0])}
 
+    # You are welcome to change this for CogTest instances
+    # Here you define how the trial information translates to stimuli
     def show_stim(self, trial):
-        # The translation from 'trial' to stimuli to be shown
         self.trial_stimuli['word'].setText(trial['word'])
         self.trial_stimuli['word'].setColor(self.colors[trial['color']])
         self.trial_stimuli['word'].draw()
-    
+
+    # You are welcome to change this for CogTest instances
+    # Here you define the screen outlook
     def show_trial_screen(self):
         if self.vars['series'] == 'training':
             self.trial_stimuli['hint_red_key'].draw()
             self.trial_stimuli['hint_red'].draw()
             self.trial_stimuli['hint_green_key'].draw()
             self.trial_stimuli['hint_green'].draw()
-    
+
+    # You are welcome to change this for CogTest instances
+    # Here you define the test demonstration/instruction
     def start_demonstration(self):
         instruction = visual.TextStim(self.test_screen,
-                                      wrapWidth = 1.8*self.test_screen.size[0],
+                                      wrapWidth=1.8*self.test_screen.size[0],
                                       pos=[0, 0.35*self.test_screen.size[1]],
                                       text=u'\
 Положи руки на стол, чтобы указательные пальцы располагались на клавишах L и D\n\
@@ -146,7 +141,7 @@ class stroop2_2 (CogTest):
                 self.show_trial_screen()
                 key_0.draw()
                 self.test_screen.flip()
-                self.suspend(wait = 1.5)
+                self.suspend(wait=1.5)
             
                 # Frame 2
                 instruction.draw()
@@ -154,7 +149,7 @@ class stroop2_2 (CogTest):
                 key_0.draw()
                 fixation.draw()
                 self.test_screen.flip()
-                self.suspend(wait = 1)
+                self.suspend(wait=1)
             
                 # Frame 3
                 instruction.draw()
@@ -163,7 +158,7 @@ class stroop2_2 (CogTest):
                 trial = choice(self.trial_dict['training'])
                 self.show_stim(trial)
                 self.test_screen.flip()
-                self.suspend(wait = 0.5)
+                self.suspend(wait=0.5)
             
                 # Frame 4
                 instruction.draw()
@@ -171,15 +166,19 @@ class stroop2_2 (CogTest):
                 self.show_stim(trial)
                 keys[trial['cor_resp']].draw()
                 self.test_screen.flip()
-                self.suspend(wait = 0.5)
+                self.suspend(wait=0.5)
             
                 # Frame 5
                 instruction.draw()
                 self.show_trial_screen()
                 keys[trial['cor_resp']].draw()
                 self.test_screen.flip()
-                self.suspend(wait = 0.5)
+                self.suspend(wait=0.5)
             except GoOn:
                 break
-        
-#stroop2_2().start('test', u'Демо')
+
+
+if __name__ == '__main__':
+    if not os.access('data', os.F_OK):
+        os.mkdir('data')
+    stroop2_2().start('test', u'Демо')

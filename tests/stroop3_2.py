@@ -5,75 +5,66 @@ from CogTest import CogTest, GoOn
 from psychopy import visual
 from collections import OrderedDict
 from random import choice
+import os
 
-# import os
-# HOME_FOLDER = '/home/ivanvoronin/P-files/2018-09-04-RT_grant/RT_tests'
-# os.chdir(HOME_FOLDER)
-
-'''
-I adjust the colors for perceived luminocity using the formula:
-def lum (R, G, B): 
-    return sqrt(0.299*R*R + 0.587*G*G + 0.114*B*B)/255
-I choose 0.338 as a baseline luminocity (red color)
-red   = [255,   0,   0],
-green = [  0, 200,   0],
-blue  = [  0, 100, 255]}
-Refs: 
- - http://alienryderflex.com/hsp.html
- - https://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
-'''
+# I adjust the colors for perceived luminocity using the formula:
+# def lum (R, G, B):
+#     return sqrt(0.299*R*R + 0.587*G*G + 0.114*B*B)/255
+# I choose 0.338 as a baseline luminocity (red color)
+# red   = [255,   0,   0],
+# green = [  0, 200,   0],
+# blue  = [  0, 100, 255]}
+# Refs:
+#  - http://alienryderflex.com/hsp.html
+#  - https://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
 
 
 class stroop3_2 (CogTest):
     name = 'stroop3_2'
-    nreps = 40
+    nreps = 40          # number of repeats within each trial dictionary
     
-    maxtrials = 10000 # maximum number of trials in the main test
-    mintrain = 5      # number of correct training responses to start main test
-    maxtrain = 20     # maximum length of training series
+    nonresptime = 5     # maximum non-response time (sec)
 
-    ndemo = 20        # number of trials in demo version of the test
-
-    breaktrials = 40  # make a break after this number of trials
-    breaktime = 6     # length of the break (sec)
-    
-    mincorrect = 0.3      # maximum percent of incorrect responses
-    maxinvalidstrike = 10   # interrupt the test when the this number of consecutive responses is invalid
-    nonresptime = 5         # maximum nonresponse time (sec)
-     
     colors = {'red':   [230,   0,   0],
               'green': [  0, 170,   0],
               'blue':  [  0, 100, 255]}
-    
-    trial_dict = OrderedDict(
-        [('training', [{'word': u'красный', 'color': 'red',   'cor_resp': 'd', 'type': 'congr'},
-                       {'word': u'зеленый', 'color': 'red',   'cor_resp': 'd', 'type': 'incongr'},
-                       {'word': u'голубой', 'color': 'red',   'cor_resp': 'd', 'type': 'incongr'},
-                       {'word': u'красный', 'color': 'green', 'cor_resp': 'l', 'type': 'incongr'},
-                       {'word': u'зеленый', 'color': 'green', 'cor_resp': 'l', 'type': 'congr'},
-                       {'word': u'голубой', 'color': 'green', 'cor_resp': 'l', 'type': 'incongr'},
-                       {'word': u'красный', 'color': 'blue',  'cor_resp': ' ', 'type': 'incongr'},
-                       {'word': u'зеленый', 'color': 'blue',  'cor_resp': ' ', 'type': 'incongr'},
-                       {'word': u'голубой', 'color': 'blue',  'cor_resp': ' ', 'type': 'congr'}]),
-         ('main',     [{'word': u'красный', 'color': 'red',   'cor_resp': 'd', 'type': 'congr'},
-                       {'word': u'зеленый', 'color': 'red',   'cor_resp': 'd', 'type': 'incongr'},
-                       {'word': u'голубой', 'color': 'red',   'cor_resp': 'd', 'type': 'incongr'},
-                       {'word': u'красный', 'color': 'green', 'cor_resp': 'l', 'type': 'incongr'},
-                       {'word': u'зеленый', 'color': 'green', 'cor_resp': 'l', 'type': 'congr'},
-                       {'word': u'голубой', 'color': 'green', 'cor_resp': 'l', 'type': 'incongr'},
-                       {'word': u'красный', 'color': 'blue',  'cor_resp': ' ', 'type': 'incongr'},
-                       {'word': u'зеленый', 'color': 'blue',  'cor_resp': ' ', 'type': 'incongr'},
-                       {'word': u'голубой', 'color': 'blue',  'cor_resp': ' ', 'type': 'congr'}])])
 
+    # This is trial dictionary passed to data.TrialHandler
+    # Must contain training series
+    # Each series must contain 'cor_resp' which is correct response
+    # (key on a keyboard)
+    trial_dict = OrderedDict(
+        [('training', [{'word': u'КРАСНЫЙ', 'color': 'red',   'cor_resp': 'd', 'type': 'congr'},
+                       {'word': u'ЗЕЛЁНЫЙ', 'color': 'red',   'cor_resp': 'd', 'type': 'incongr'},
+                       {'word': u'ГОЛУБОЙ', 'color': 'red',   'cor_resp': 'd', 'type': 'incongr'},
+                       {'word': u'КРАСНЫЙ', 'color': 'green', 'cor_resp': 'l', 'type': 'incongr'},
+                       {'word': u'ЗЕЛЁНЫЙй', 'color': 'green', 'cor_resp': 'l', 'type': 'congr'},
+                       {'word': u'ГОЛУБОЙ', 'color': 'green', 'cor_resp': 'l', 'type': 'incongr'},
+                       {'word': u'КРАСНЫЙ', 'color': 'blue',  'cor_resp': ' ', 'type': 'incongr'},
+                       {'word': u'ЗЕЛЁНЫЙ', 'color': 'blue',  'cor_resp': ' ', 'type': 'incongr'},
+                       {'word': u'ГОЛУБОЙ', 'color': 'blue',  'cor_resp': ' ', 'type': 'congr'}]),
+         ('main',     [{'word': u'КРАСНЫЙ', 'color': 'red',   'cor_resp': 'd', 'type': 'congr'},
+                       {'word': u'ЗЕЛЁНЫЙ', 'color': 'red',   'cor_resp': 'd', 'type': 'incongr'},
+                       {'word': u'ГОЛУБОЙ', 'color': 'red',   'cor_resp': 'd', 'type': 'incongr'},
+                       {'word': u'КРАСНЫЙ', 'color': 'green', 'cor_resp': 'l', 'type': 'incongr'},
+                       {'word': u'ЗЕЛЁНЫЙ', 'color': 'green', 'cor_resp': 'l', 'type': 'congr'},
+                       {'word': u'ГОЛУБОЙ', 'color': 'green', 'cor_resp': 'l', 'type': 'incongr'},
+                       {'word': u'КРАСНЫЙ', 'color': 'blue',  'cor_resp': ' ', 'type': 'incongr'},
+                       {'word': u'ЗЕЛЁНЫЙ', 'color': 'blue',  'cor_resp': ' ', 'type': 'incongr'},
+                       {'word': u'ГОЛУБОЙ', 'color': 'blue',  'cor_resp': ' ', 'type': 'congr'}])])
+
+    # You are welcome to change this for CogTest instances
+    # Here you define all test stimuli
+    # The fixation stimulus must be present
     def init_trial_stimuli(self):
         self.trial_stimuli = {
             # Fixation stimulus indicating start of the trial
             'fixation':
                 visual.ShapeStim(self.test_screen, units=None, lineWidth=4,
-                                 pos = [0, 0], lineColor = 'white', 
+                                 pos=[0, 0], lineColor='white',
                                  closeShape=False,
-                                 vertices = ((0,-10), (0,10), (0,0), 
-                                             (-10,0), (10,0))),
+                                 vertices=((0, -10), (0, 10), (0, 0),
+                                           (-10, 0), (10, 0))),
             # Trial stimuli
             'word':
                 visual.TextStim(self.test_screen, 
@@ -114,12 +105,15 @@ class stroop3_2 (CogTest):
                             lineColor='white',
                             pos=[0, -100])}
 
+    # You are welcome to change this for CogTest instances
+    # Here you define how the trial information translates to stimuli
     def show_stim(self, trial):
-        # The translation from 'trial' to stimuli to be shown
         self.trial_stimuli['word'].setText(trial['word'])
         self.trial_stimuli['word'].setColor(self.colors[trial['color']])
         self.trial_stimuli['word'].draw()
 
+    # You are welcome to change this for CogTest instances
+    # Here you define the screen outlook
     def show_trial_screen(self):
         if self.vars['series'] == 'training':
             self.trial_stimuli['hint_red_key'].draw()
@@ -129,6 +123,8 @@ class stroop3_2 (CogTest):
             self.trial_stimuli['hint_blue_key'].draw()
             self.trial_stimuli['hint_blue'].draw()
 
+    # You are welcome to change this for CogTest instances
+    # Here you define the test demonstration/instruction
     def start_demonstration(self):
         instruction = visual.TextStim(self.test_screen,
                                       wrapWidth=1.8*self.test_screen.size[0],
@@ -208,5 +204,9 @@ class stroop3_2 (CogTest):
                 self.suspend(wait=0.5)
             except GoOn:
                 break
-    
-# stroop3_2().start('test', u'Демо')
+
+
+if __name__ == '__main__':
+    if not os.access('data', os.F_OK):
+        os.mkdir('data')
+    stroop3_2().start('test', u'Демо')

@@ -6,42 +6,50 @@ from numpy import random
 from datetime import datetime
 from collections import OrderedDict
 
+
 class FinishTest (Exception):
     pass
+
 
 class GoOn (Exception):
     pass
 
-# import os
-# HOME_FOLDER = '/home/ivanvoronin/P-files/2018-09-04-RT_grant/RT_tests'
-# os.chdir(HOME_FOLDER)
 
 # TODO: Ввести секретные клавиши для паузы
 class CogTestRelease:
     # You can change this
     name = 'CogTestRelease'
-    nreps = 75        # number of repeats
+    nreps = 75         # number of repeats within each trial dictionary
     
-    maxtrials = 10000 # maximum number of trials in the main test
-    mintrain = 5      # number of correct training responses to start main test
-    maxtrain = 20     # maximum length of training series
+    maxtrials = 10000  # maximum number of trials in the main test
+    mintrain = 5       # minimum number of training trials
+    maxtrain = 20      # maximum number of training trials
 
-    ndemo = 20        # number of trials in demo version of the test
+    ndemo = 20         # number of trials in demo version of the test
 
-    breaktrials = 40  # make a break after this number of trials
-    breaktime = 6     # length of the break (sec)
+    breaktrials = 40   # make a break after this number of trials
+    breaktime = 6      # length of the break (sec)
     
-    mincorrect = 0.7      # maximum percent of incorrect responses
+    mincorrect = 0.7        # maximum percent of incorrect responses before test halts
+                            # also, this is the minimum percent of correct responses
+                            # to finish training series
     maxinvalidstrike = 10   # interrupt the test when the this number of consecutive responses is invalid
     nonresptime = 3         # maximum nonresponse time (sec)
-        
+
+    # This is trial dictionary passed to data.TrialHandler
+    # Must contain training series
+    # Each series must contain 'cor_resp' which is correct response
+    # (key on a keyboard)
     trial_dict = OrderedDict(
         [('training', [{'target': None, 'cor_resp': None}]),
          ('main',     [{'target': None, 'cor_resp': None}])])
 
+    # This is the key to interrupt the test between series,
+    # kept for testers
     interruptkey = 'y'
 
     # Don't change this
+    # Internal test components
     status = 'missing'
     start_time = None
     end_time = None 
@@ -66,7 +74,7 @@ class CogTestRelease:
     
     def init_devices(self):
         # Initialize test screen
-        # TODO: Measure and record actual frame rate getActuralFrameRate()
+        # TODO: Measure and record actual frame rate getActualFrameRate()
         #       getMsPerFrame()
         self.test_screen = visual.Window(fullscr=True, units='pix',
                                          screen=1, winType='pyglet')        
@@ -75,7 +83,9 @@ class CogTestRelease:
         # Initialize keyboard input
         self.io = iohub.launchHubServer()
         self.keyboard = self.io.devices.keyboard
-        
+
+        self.test_screen.mouseVisible = False
+
     def init_attr(self):
         # Validity checks
         # Check that all keys in trial_dict are same
@@ -126,7 +136,6 @@ class CogTestRelease:
 
         self.maxtrials = self.maxtrain
         for trial in trials:
-            # FIXME: check_status
             # Run trial
             self.totalN += 1
             self.vars['n'] = self.totalN
@@ -260,21 +269,18 @@ class CogTestRelease:
                                 text=u'Слишком много ошибок!\nВнимательно посмотри инструкцию еще раз',
                                 pos=[0, 0], color='black')}
     
-    # You are welcome to change this
+    # You are welcome to change this for CogTest instances
+    # Here you define all test stimuli
+    # The fixation stimulus must be present
     def init_trial_stimuli(self):
         self.trial_stimuli = {
             # Fixation stimulus indicating start of the trial
             'fixation':
                 visual.ShapeStim(self.test_screen, units=None, lineWidth=4, 
-                                 pos = [0, 0], lineColor = 'white', 
+                                 pos=[0, 0], lineColor='white',
                                  closeShape=False,
-                                 vertices = ((0,-10), (0,10), (0,0), 
-                                             (-10,0), (10,0)))}         
-        
-#    def show_instr(self):
-#        for stimulus in self.instr_stimuli[self.vars['series']]:
-#            stimulus.draw()
-#        self.test_screen.flip()
+                                 vertices=((0, -10), (0, 10), (0, 0),
+                                           (-10, 0), (10, 0)))}
 
     def suspend(self, keys=None, wait=3):
         self.keyboard.clearEvents()
@@ -294,10 +300,12 @@ class CogTestRelease:
                 raise FinishTest()
             else:
                 raise GoOn()
-            
+
+    # You are welcome to change this for CogTest instances
+    # Here you define the test demonstration/instruction
     def start_demonstration(self):
         self.test_screen.flip()
-        self.suspend(wait = None)    
+        self.suspend(wait=None)
 
     def make_a_break(self, breaktime):
         for i in reversed(range(breaktime)):
@@ -308,12 +316,13 @@ class CogTestRelease:
             self.test_screen.flip()
             core.wait(1)
     
-    # You are welcome to change this  
+    # You are welcome to change this for CogTest instances
+    # Here you define the screen outlook
     def show_trial_screen(self):
-        # The screen outlook
         self.trial_stimuli['fixation'].draw()
     
-    # You are welcome to change this
+    # You are welcome to change this for CogTest instances
+    # Here you define how the trial information is translated to stimuli
     def show_stim(self, trial):
         # The translation from 'trial' to stimuli to be shown
         pass

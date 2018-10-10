@@ -7,10 +7,7 @@ from collections import OrderedDict
 from psychopy.tools.coordinatetools import pol2cart
 import itertools
 from random import choice
-
-# import os
-# HOME_FOLDER = '/home/ivanvoronin/P-files/2018-09-04-RT_grant/RT_tests'
-# os.chdir(HOME_FOLDER)
+import os
 
 shape = ['circle', 'triangle']
 color = ['red', 'green']
@@ -64,21 +61,14 @@ for i in figures2cue:
 
 class VisCRT (CogTest):
     name = 'VisCRT'
-    nreps = 1
+    nreps = 1           # number of repeats within each trial dictionary
 
-    maxtrials = 10000 # maximum number of trials in the main test
-    mintrain = 5      # number of correct training responses to start main test
-    maxtrain = 20     # maximum length of training series
+    nonresptime = 7     # maximum non-response time (sec)
 
-    ndemo = 20        # number of trials in demo version of the test
-
-    breaktrials = 40  # make a break after this number of trials
-    breaktime = 6     # length of the break (sec)
-    
-    mincorrect = 0.3      # maximum percent of incorrect responses
-    maxinvalidstrike = 10   # interrupt the test when the this number of consecutive responses is invalid
-    nonresptime = 7         # maximum nonresponse time (sec)
-    
+    # This is trial dictionary passed to data.TrialHandler
+    # Must contain training series
+    # Each series must contain 'cor_resp' which is correct response
+    # (key on a keyboard)
     trial_dict = OrderedDict([
         ('training', trial_dict1),
         ('main', trial_dict2)])
@@ -87,15 +77,18 @@ class VisCRT (CogTest):
               'green': [  0, 170,   0],
               'blue':  [  0, 100, 255]}
 
+    # You are welcome to change this for CogTest instances
+    # Here you define all test stimuli
+    # The fixation stimulus must be present
     def init_trial_stimuli(self):
         self.trial_stimuli = {
             # Fixation stimulus indicating start of the trial
             'fixation':
                 visual.ShapeStim(self.test_screen, units=None, lineWidth=4,
-                                 pos = [0, 0], lineColor = 'white', 
+                                 pos=[0, 0], lineColor='white',
                                  closeShape=False,
-                                 vertices = ((0,-10), (0,10), (0,0), 
-                                             (-10,0), (10,0))),
+                                 vertices=((0, -10), (0, 10), (0, 0),
+                                           (-10, 0), (10, 0))),
             # Trial stimuli
             'circle1':
                 visual.Circle(self.test_screen, units=None, radius=40, 
@@ -128,16 +121,16 @@ class VisCRT (CogTest):
             # Cues
             'cue1':
                 visual.ShapeStim(self.test_screen, units=None, lineWidth=4,
-                                 pos = [0, 0], lineColor = 'white', 
+                                 pos=[0, 0], lineColor='white',
                                  closeShape=False,
-                                 vertices = ((0,-10), (0,10), 
-                                             (-10,0), (0,10), (10,0))),
+                                 vertices=((0, -10), (0, 10),
+                                           (-10, 0), (0, 10), (10, 0))),
             'cue2':
                 visual.ShapeStim(self.test_screen, units=None, lineWidth=4,
-                                 pos = [0, 0], lineColor = 'white', 
+                                 pos=[0, 0], lineColor='white',
                                  closeShape=False,
-                                 vertices = ((0,10), (0,-10), 
-                                             (-10,0), (0,-10), (10,0))),
+                                 vertices=((0, 10), (0, -10),
+                                           (-10, 0), (0, -10), (10, 0))),
             # Hints
             'hint_cue1':
                 visual.TextStim(self.test_screen, 
@@ -157,6 +150,8 @@ class VisCRT (CogTest):
                                 pos=[330, 0], color='white')    
             }
 
+    # You are welcome to change this for CogTest instances
+    # Here you define how the trial information translates to stimuli
     def show_stim(self, trial):
         # The translation from 'trial' to stimuli to be shown
         if trial['cue'] == 'shape':
@@ -231,7 +226,9 @@ class VisCRT (CogTest):
                     self.trial_stimuli['triangle2'].setFillColor(None)
                     self.trial_stimuli['triangle2'].setLineColor(self.colors['green'])   
             self.trial_stimuli['triangle2'].draw()
-            
+
+    # You are welcome to change this for CogTest instances
+    # Here you define the screen outlook
     def show_trial_screen(self):    
         # Hint
         if self.vars['series'] == 'training':
@@ -240,6 +237,8 @@ class VisCRT (CogTest):
             self.trial_stimuli['hint_D'].draw()
             self.trial_stimuli['hint_L'].draw()
 
+    # You are welcome to change this for CogTest instances
+    # Here you define the test demonstration/instruction
     def start_demonstration(self):
         instruction = visual.TextStim(self.test_screen, 
                                       wrapWidth=1.8*self.test_screen.size[0],
@@ -282,7 +281,7 @@ class VisCRT (CogTest):
                 self.show_trial_screen()
                 key_0.draw()
                 self.test_screen.flip()
-                self.suspend(wait = 1.5)
+                self.suspend(wait=1.5)
             
                 # Frame 2
                 instruction.draw()
@@ -290,7 +289,7 @@ class VisCRT (CogTest):
                 key_0.draw()
                 fixation.draw()
                 self.test_screen.flip()
-                self.suspend(wait = 1)
+                self.suspend(wait=1)
             
                 # Frame 3
                 instruction.draw()
@@ -299,7 +298,7 @@ class VisCRT (CogTest):
                 trial = choice(self.trial_dict['training'])
                 self.show_stim(trial)
                 self.test_screen.flip()
-                self.suspend(wait = 0.5)
+                self.suspend(wait=0.5)
             
                 # Frame 4
                 instruction.draw()
@@ -307,15 +306,19 @@ class VisCRT (CogTest):
                 self.show_stim(trial)
                 keys[trial['cor_resp']].draw()
                 self.test_screen.flip()
-                self.suspend(wait = 0.5)
+                self.suspend(wait=0.5)
             
                 # Frame 5
                 instruction.draw()
                 self.show_trial_screen()
                 keys[trial['cor_resp']].draw()
                 self.test_screen.flip()
-                self.suspend(wait = 0.5)
+                self.suspend(wait=0.5)
             except GoOn:
                 break
 
-# VisCRT().start('test', u'Демо')
+
+if __name__ == '__main__':
+    if not os.access('data', os.F_OK):
+        os.mkdir('data')
+    VisCRT().start('test', u'Демо')

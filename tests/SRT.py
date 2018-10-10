@@ -4,33 +4,24 @@
 from CogTest import CogTest, GoOn
 from psychopy import visual
 from collections import OrderedDict
-
-# import os
-# HOME_FOLDER = '/home/ivanvoronin/P-files/2018-09-04-RT_grant/RT_tests'
-# os.chdir(HOME_FOLDER)
+import os
 
 
 class SRT (CogTest):
     name = 'SRT'
-    nreps = 100
-    
-    maxtrials = 10000 # maximum number of trials in the main test
-    mintrain = 5      # number of correct training responses to start main test
-    maxtrain = 20     # maximum length of training series
+    nreps = 100         # number of repeats within each trial dictionary
 
-    ndemo = 20        # number of trials in demo version of the test
-
-    breaktrials = 40  # make a break after this number of trials
-    breaktime = 6     # length of the break (sec)
-    
-    mincorrect = 0.3      # maximum percent of incorrect responses
-    maxinvalidstrike = 10   # interrupt the test when the this number of consecutive responses is invalid
-    nonresptime = 3         # maximum nonresponse time (sec)
-    
+    # This is trial dictionary passed to data.TrialHandler
+    # Must contain training series
+    # Each series must contain 'cor_resp' which is correct response
+    # (key on a keyboard)
     trial_dict = OrderedDict(
         [('training', [{'target': 'center', 'cor_resp': ' '}]),
          ('main',     [{'target': 'center', 'cor_resp': ' '}])])
-    
+
+    # You are welcome to change this for CogTest instances
+    # Here you define all test stimuli
+    # The fixation stimulus must be present
     def init_trial_stimuli(self):
         self.trial_stimuli = {
             # Fixation stimulus indicating start of the trial
@@ -42,11 +33,14 @@ class SRT (CogTest):
             'center':
                 visual.Circle(self.test_screen, units=None, radius=25, pos=[0, 0], 
                               lineWidth=3, fillColor='white')}
-        
+
+    # You are welcome to change this for CogTest instances
+    # Here you define how the trial information translates to stimuli
     def show_stim(self, trial):
-        # The translation from 'trial' to stimuli to be shown
         self.trial_stimuli[trial['target']].draw()
 
+    # You are welcome to change this for CogTest instances
+    # Here you define the test demonstration/instruction
     def start_demonstration(self):
         instruction = visual.TextStim(self.test_screen, 
                                       wrapWidth=1.8*self.test_screen.size[0],
@@ -79,35 +73,39 @@ class SRT (CogTest):
                 instruction.draw()
                 key_0.draw()
                 self.test_screen.flip()
-                self.suspend(wait = 1.5)
+                self.suspend(wait=1.5)
             
                 # Frame 2
                 instruction.draw()
                 key_0.draw()
                 fixation.draw()
                 self.test_screen.flip()
-                self.suspend(wait = 1)
+                self.suspend(wait=1)
             
                 # Frame 3
                 instruction.draw()
                 key_0.draw()
                 stim.draw()
                 self.test_screen.flip()
-                self.suspend(wait = 0.2)
+                self.suspend(wait=0.2)
             
                 # Frame 4
                 instruction.draw()
                 key_press.draw()            
                 stim.draw()
                 self.test_screen.flip()
-                self.suspend(wait = 0.3)
+                self.suspend(wait=0.3)
             
                 # Frame 5
                 instruction.draw()
                 key_press.draw()
                 self.test_screen.flip()
-                self.suspend(wait = 0.5)
+                self.suspend(wait=0.5)
             except GoOn:
                 break
 
-#SRT().start('test', u'Демо')
+
+if __name__ == '__main__':
+    if not os.access('data', os.F_OK):
+        os.mkdir('data')
+    SRT().start('test', u'Демо')

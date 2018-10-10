@@ -2,14 +2,11 @@
 
 block_cipher = None
 
-added_files = [('pics', '.'),
-               ('stimuli', '.')
-               ]
 
 a = Analysis(['launch.py'],
-             pathex=['S:\\Ivan\\RT_tests'],
+             pathex=['/home/ivanvoronin/P-files/2018-09-04-RT_grant/RT_tests'],
              binaries=[],
-             datas=added_files,
+             datas=[],
              hiddenimports=[],
              hookspath=[],
              runtime_hooks=[],
@@ -22,14 +19,18 @@ pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
           a.scripts,
-          a.binaries,
-          a.zipfiles,
-          a.datas,
           [],
-          name='RT_tests',
+          exclude_binaries=True,
+          name='launch',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          runtime_tmpdir=None,
           console=True )
+coll = COLLECT(exe,
+               a.binaries,
+               a.zipfiles,
+               a.datas,
+               strip=False,
+               upx=True,
+               name='launch')

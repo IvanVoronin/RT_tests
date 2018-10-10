@@ -4,29 +4,12 @@
 from CogTestRelease import CogTestRelease, GoOn
 from psychopy import visual
 from collections import OrderedDict
-
-# import os
-# HOME_FOLDER = '/home/ivanvoronin/P-files/2018-09-04-RT_grant/RT_tests'
-# os.chdir(HOME_FOLDER)
-
+import os
 
 class SRT_rel (CogTestRelease):
     name = 'SRT_rel'
     nreps = 100
 
-    maxtrials = 10000 # maximum number of trials in the main test
-    mintrain = 5      # number of correct training responses to start main test
-    maxtrain = 20     # maximum length of training series
-
-    ndemo = 20        # number of trials in demo version of the test
-
-    breaktrials = 40  # make a break after this number of trials
-    breaktime = 6     # length of the break (sec)
-    
-    mincorrect = 0.3      # maximum percent of incorrect responses
-    maxinvalidstrike = 10   # interrupt the test when the this number of consecutive responses is invalid
-    nonresptime = 3         # maximum nonresponse time (sec)
-    
     trial_dict = OrderedDict(
         [('training', [{'target': 'center', 'cor_resp': ' '}]),
          ('main',     [{'target': 'center', 'cor_resp': ' '}])])
@@ -108,4 +91,8 @@ class SRT_rel (CogTestRelease):
             except GoOn:
                 break
          
-#SRT_rel().start('test', u'Демо')
+
+if __name__ == '__main__':
+    if not os.access('data', os.F_OK):
+        os.mkdir('data')
+    SRT_rel().start('test', u'Демо')

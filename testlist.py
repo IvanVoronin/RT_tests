@@ -6,6 +6,7 @@ from tests import SRT, CRT2, CRT4, VerbCRT
 from tests import stroop2_1, stroop2_2, stroop3_1, stroop3_2
 from tests import VisCRT, SRT_rel, CRT2_rel
 
+# This is the list of the tests to launch
 test_battery = OrderedDict([
     ('SRT', SRT.SRT()),
     ('CRT2', CRT2.CRT2()),
@@ -19,6 +20,4 @@ test_battery = OrderedDict([
     ('SRT_rel',  SRT_rel.SRT_rel()),
     ('CRT2_rel', CRT2_rel.CRT2_rel())])
 
-# Вернуть тесты SRT и CRT2 с освобождением кнопки
-# TODO: Validate instruction
-# TODO: Gather statistics about number of trials, about test duration
+# TODO: Gather statistics about number of trials and test duration

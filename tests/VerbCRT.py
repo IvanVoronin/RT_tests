@@ -5,10 +5,7 @@ from CogTest import CogTest, GoOn
 from psychopy import visual
 from collections import OrderedDict
 from random import choice
-
-# import os
-# HOME_FOLDER = '/home/ivanvoronin/P-files/2018-09-04-RT_grant/RT_tests'
-# os.chdir(HOME_FOLDER)
+import os
 
 trial_dict = OrderedDict()
 for i in ['training', 'series1', 'series2', 'series3']:
@@ -32,22 +29,19 @@ for i in ['training', 'series1', 'series2', 'series3']:
 
 class VerbCRT (CogTest):
     name = 'VerbCRT'
-    nreps = 1
-    maxtrials = 10000 # maximum number of trials in the main test
-    mintrain = 5      # number of correct training responses to start main test
-    maxtrain = 20     # maximum length of training series
+    nreps = 1               # number of repeats within each trial dictionary
 
-    ndemo = 20        # number of trials in demo version of the test
+    nonresptime = 5         # maximum non-response time (sec)
 
-    breaktrials = 40  # make a break after this number of trials
-    breaktime = 6     # length of the break (sec)
-    
-    mincorrect = 0.3      # maximum percent of incorrect responses
-    maxinvalidstrike = 10   # interrupt the test when the this number of consecutive responses is invalid
-    nonresptime = 5         # maximum nonresponse time (sec)
-    
+    # This is trial dictionary passed to data.TrialHandler
+    # Must contain training series
+    # Each series must contain 'cor_resp' which is correct response
+    # (key on a keyboard)
     trial_dict = trial_dict
 
+    # You are welcome to change this for CogTest instances
+    # Here you define all test stimuli
+    # The fixation stimulus must be present
     def init_trial_stimuli(self):
         self.trial_stimuli = {
             # Fixation stimulus indicating start of the trial
@@ -56,7 +50,7 @@ class VerbCRT (CogTest):
                                  pos=[0, 0], lineColor='white',
                                  closeShape=False,
                                  vertices=((0, -10), (0, 10), (0, 0),
-                                             (-10, 0), (10, 0))),
+                                           (-10, 0), (10, 0))),
             # Trial stimuli
             'word':
                 visual.TextStim(self.test_screen, 
@@ -72,16 +66,21 @@ class VerbCRT (CogTest):
                                 text=u'растение -> L', height=35,
                                 pos=[270, 0], color='white')}
 
+    # You are welcome to change this for CogTest instances
+    # Here you define the screen outlook
     def show_trial_screen(self):
         if self.vars['series'] == 'training':
             self.trial_stimuli['hint_animal'].draw()
             self.trial_stimuli['hint_plant'].draw()
 
+    # You are welcome to change this for CogTest instances
+    # Here you define the screen outlook
     def show_stim(self, trial):
-        # The translation from 'trial' to stimuli to be shown
         self.trial_stimuli['word'].setText(trial['target'])
         self.trial_stimuli['word'].draw()
-        
+
+    # You are welcome to change this for CogTest instances
+    # Here you define the test demonstration/instruction
     def start_demonstration(self):
         instruction = visual.TextStim(self.test_screen, 
                                       wrapWidth=1.8*self.test_screen.size[0],
@@ -120,7 +119,7 @@ class VerbCRT (CogTest):
                 self.show_trial_screen()
                 key_0.draw()
                 self.test_screen.flip()
-                self.suspend(wait = 1.5)
+                self.suspend(wait=1.5)
             
                 # Frame 2
                 instruction.draw()
@@ -128,7 +127,7 @@ class VerbCRT (CogTest):
                 key_0.draw()
                 fixation.draw()
                 self.test_screen.flip()
-                self.suspend(wait = 1)
+                self.suspend(wait=1)
             
                 # Frame 3
                 instruction.draw()
@@ -137,7 +136,7 @@ class VerbCRT (CogTest):
                 trial = choice(self.trial_dict['training'])
                 self.show_stim(trial)
                 self.test_screen.flip()
-                self.suspend(wait = 0.7)
+                self.suspend(wait=0.7)
             
                 # Frame 4
                 instruction.draw()
@@ -145,15 +144,19 @@ class VerbCRT (CogTest):
                 self.show_stim(trial)
                 keys[trial['cor_resp']].draw()
                 self.test_screen.flip()
-                self.suspend(wait = 0.5)
+                self.suspend(wait=0.5)
             
                 # Frame 5
                 instruction.draw()
                 self.show_trial_screen()
                 keys[trial['cor_resp']].draw()
                 self.test_screen.flip()
-                self.suspend(wait = 0.5)
+                self.suspend(wait=0.5)
             except GoOn:
                 break
 
-#VerbCRT().start('test', 'Демо') 
+
+if __name__ == '__main__':
+    if not os.access('data', os.F_OK):
+        os.mkdir('data')
+    VerbCRT().start('test', u'Демо')

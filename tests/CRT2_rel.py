@@ -5,43 +5,35 @@ from CogTestRelease import CogTestRelease, GoOn
 from psychopy import visual
 from collections import OrderedDict
 from random import choice
+import os
 
-# import os
-# HOME_FOLDER = '/home/ivanvoronin/P-files/2018-09-04-RT_grant/RT_tests'
-# os.chdir(HOME_FOLDER)
 
 class CRT2_rel (CogTestRelease):
     name = 'CRT2_rel'
-    nreps = 75
-    
-    maxtrials = 10000 # maximum number of trials in the main test
-    mintrain = 5      # number of correct training responses to start main test
-    maxtrain = 20     # maximum length of training series
+    nreps = 75      # number of repeats within each trial dictionary
 
-    ndemo = 20        # number of trials in demo version of the test
-
-    breaktrials = 40  # make a break after this number of trials
-    breaktime = 6     # length of the break (sec)
-    
-    mincorrect = 0.3      # maximum percent of incorrect responses
-    maxinvalidstrike = 10   # interrupt the test when the this number of consecutive responses is invalid
-    nonresptime = 3         # maximum nonresponse time (sec)    
-    
+    # This is trial dictionary passed to data.TrialHandler
+    # Must contain training series
+    # Each series must contain 'cor_resp' which is correct response
+    # (key on a keyboard)
     trial_dict = OrderedDict(
         [('training', [{'target': 'left', 'cor_resp': 'd'},
                        {'target': 'right', 'cor_resp': 'l'}]),
          ('main',     [{'target': 'left', 'cor_resp': 'd'},
                        {'target': 'right', 'cor_resp': 'l'}])])
 
+    # You are welcome to change this for CogTest instances
+    # Here you define all test stimuli
+    # The fixation stimulus must be present
     def init_trial_stimuli(self):
         self.trial_stimuli = {
             # Fixation stimulus indicating start of the trial
             'fixation':
                 visual.ShapeStim(self.test_screen, units=None, lineWidth=4,
-                                 pos = [0, 0], lineColor = 'red', 
+                                 pos=[0, 0], lineColor='red',
                                  closeShape=False,
-                                 vertices = ((0,-10), (0,10), (0,0), 
-                                             (-10,0), (10,0))),            
+                                 vertices=((0, -10), (0, 10), (0, 0),
+                                           (-10, 0), (10, 0))),
             # Trial stimuli
             'blanc_left':
                 visual.Circle(self.test_screen, units=None, radius=50, 
@@ -64,7 +56,9 @@ class CRT2_rel (CogTestRelease):
                 visual.TextStim(self.test_screen, text='L',
                                 pos=[160, 0], color='white',
                                 height=30)}
-    
+
+    # You are welcome to change this for CogTest instances
+    # Here you define the screen outlook
     def show_trial_screen(self):
         self.trial_stimuli['fixation'].draw()
         self.trial_stimuli['blanc_left'].draw()
@@ -73,10 +67,13 @@ class CRT2_rel (CogTestRelease):
             self.trial_stimuli['hint_left'].draw()
             self.trial_stimuli['hint_right'].draw()
 
+    # You are welcome to change this for CogTest instances
+    # Here you define how the trial information is translated to stimuli
     def show_stim(self, trial):
-        # The translation from 'trial' to stimuli to be shown
         self.trial_stimuli[trial['target']].draw()
 
+    # You are welcome to change this for CogTest instances
+    # Here you define the test demonstration/instruction
     def start_demonstration(self):
         instruction = visual.TextStim(self.test_screen, 
                                       wrapWidth=1.8*self.test_screen.size[0],
@@ -117,7 +114,7 @@ class CRT2_rel (CogTestRelease):
         key_0.draw()
         self.show_trial_screen()
         self.test_screen.flip()
-        self.suspend(wait = 2)
+        self.suspend(wait=2)
         
         while True:
             try:
@@ -127,7 +124,7 @@ class CRT2_rel (CogTestRelease):
                 fixation.setLineColor('green')
                 self.show_trial_screen()
                 self.test_screen.flip()
-                self.suspend(wait = 1.5)
+                self.suspend(wait=1.5)
             
                 # Frame 2
                 instruction.draw()
@@ -136,7 +133,7 @@ class CRT2_rel (CogTestRelease):
                 ch = choice(['right', 'left'])
                 self.trial_stimuli[ch].draw()
                 self.test_screen.flip()
-                self.suspend(wait = 0.5)
+                self.suspend(wait=0.5)
             
                 # Frame 3
                 instruction.draw()
@@ -144,9 +141,12 @@ class CRT2_rel (CogTestRelease):
                 fixation.setLineColor('red')
                 self.show_trial_screen()
                 self.test_screen.flip()
-                self.suspend(wait = 0.5)            
+                self.suspend(wait=0.5)
             except GoOn:
                 break
-        
-#CRT2_rel().start('test', u'Демо')
-        
+
+
+if __name__ == '__main__':
+    if not os.access('data', os.F_OK):
+        os.mkdir('data')
+    CRT2_rel().start('test', u'Демо')
