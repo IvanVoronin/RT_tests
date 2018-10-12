@@ -104,6 +104,7 @@ https://github.com/IvanVoronin/RT_tests
     for i in test_battery.keys():
         info_dlg.addField(i, True)
 
+    info_dlg.addText(u'\nНе забудьте включить английскую расскладку клавиатуры!\n')
     info_dlg.show()
 
     if not info_dlg.OK:
@@ -200,8 +201,6 @@ https://github.com/IvanVoronin/RT_tests
         logging.flush()
         log.write('FINISHING ' + test.name
                 + '\n======================================================================\n')
-
-
 
     END_TIME = datetime.now()
 

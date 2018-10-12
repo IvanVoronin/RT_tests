@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from psychopy import visual, iohub, data, core
+from psychopy import visual, iohub, data, core, logging
 from numpy import random
 from datetime import datetime
 from collections import OrderedDict
+
 
 
 class FinishTest (Exception):
@@ -115,6 +116,10 @@ class CogTest:
         self.vars = {i: None for i in self.varnames}
         
     def start(self, data_folder, mode='Демо', test_screen=None):
+        logging.console.setLevel(logging.WARNING)
+        log = logging.LogFile('data/' + data_folder + '/' + self.name + '.log',
+                              level=logging.INFO, filemode='w')
+
         self.init_attr()
                 
         # Make output folder
@@ -168,6 +173,7 @@ class CogTest:
                     except FinishTest:
                         self.exit()
                         return
+            logging.flush()
         
         # --------------------------------------------------------------------
         # 2. Main series
@@ -223,6 +229,7 @@ class CogTest:
                 
                 self.run_trial(trial)
                 self.write_data()
+                logging.flush()
         else:
             self.status = 'complete'
         
@@ -260,6 +267,7 @@ class CogTest:
         self.data_file.close()
         if self.close_test_screen:
             self.test_screen.close()
+        logging.flush()
     
     def init_instr_stimuli(self):
         # Instruction for each series from self.trial_dict
