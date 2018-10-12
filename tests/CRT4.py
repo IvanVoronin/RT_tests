@@ -11,7 +11,10 @@ import os
 class CRT4 (CogTest):
     name = 'CRT4'
     nreps = 30
-    
+
+    mintrain = 7       # minimum number of training trials
+    maxtrain = 20      # maximum number of training trials
+
     # This is trial dictionary passed to data.TrialHandler
     # Must contain training series
     # Each series must contain 'cor_resp' which is correct response

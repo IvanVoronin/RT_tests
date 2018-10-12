@@ -31,6 +31,9 @@ class VerbCRT (CogTest):
     name = 'VerbCRT'
     nreps = 1               # number of repeats within each trial dictionary
 
+    mintrain = 10       # minimum number of training trials
+    maxtrain = 30      # maximum number of training trials
+
     nonresptime = 5         # maximum non-response time (sec)
 
     # This is trial dictionary passed to data.TrialHandler
@@ -133,7 +136,7 @@ class VerbCRT (CogTest):
                 instruction.draw()
                 self.show_trial_screen()
                 key_0.draw()
-                trial = choice(self.trial_dict['training'])
+                trial = choice(self.training_trials)
                 self.show_stim(trial)
                 self.test_screen.flip()
                 self.suspend(wait=0.7)

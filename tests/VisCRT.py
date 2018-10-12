@@ -26,14 +26,14 @@ for i in figures1cue:
         i[0][0] + i[0][1] + (i[1],)))
     if trial['cue'] == 'shape':
         if trial['shape1'] == trial['shape2']:
-            trial['cor_resp'] = 'l'
-        else:
             trial['cor_resp'] = 'd'
+        else:
+            trial['cor_resp'] = 'l'
     elif trial['cue'] == 'color':
         if trial['color1'] == trial['color2']:
-            trial['cor_resp'] = 'l'
-        else:
             trial['cor_resp'] = 'd'
+        else:
+            trial['cor_resp'] = 'l'
     trial_dict1.append(trial)
     
 # Series 2: filled an contoured shapes
@@ -41,6 +41,7 @@ figure2 = list(itertools.product(shape, color, fill))
 figures2 = list(itertools.product(figure2, figure2))
 figures2cue = list(itertools.product(figures2, cue))
 
+# FIXME: Exclude identical shapes
 trial_dict2 = []
 for i in figures2cue:
     trial = dict(zip(
@@ -48,20 +49,23 @@ for i in figures2cue:
         i[0][0] + i[0][1] + (i[1],)))
     if trial['cue'] == 'shape':
         if trial['shape1'] == trial['shape2']:
-            trial['cor_resp'] = 'l'
-        else:
             trial['cor_resp'] = 'd'
+        else:
+            trial['cor_resp'] = 'l'
     elif trial['cue'] == 'color':
         if trial['color1'] == trial['color2']:
-            trial['cor_resp'] = 'l'
-        else:
             trial['cor_resp'] = 'd'
+        else:
+            trial['cor_resp'] = 'l'
     trial_dict2.append(trial)
 
 
 class VisCRT (CogTest):
     name = 'VisCRT'
     nreps = 1           # number of repeats within each trial dictionary
+
+    mintrain = 10       # minimum number of training trials
+    maxtrain = 30      # maximum number of training trials
 
     nonresptime = 7     # maximum non-response time (sec)
 
@@ -120,33 +124,37 @@ class VisCRT (CogTest):
                                  fillColorSpace='rgb255'),
             # Cues
             'cue1':
-                visual.ShapeStim(self.test_screen, units=None, lineWidth=4,
-                                 pos=[0, 0], lineColor='white',
-                                 closeShape=False,
-                                 vertices=((0, -10), (0, 10),
-                                           (-10, 0), (0, 10), (10, 0))),
+                visual.TextStim(self.test_screen, text=u'ФОРМА'),
             'cue2':
-                visual.ShapeStim(self.test_screen, units=None, lineWidth=4,
-                                 pos=[0, 0], lineColor='white',
-                                 closeShape=False,
-                                 vertices=((0, 10), (0, -10),
-                                           (-10, 0), (0, -10), (10, 0))),
+                visual.TextStim(self.test_screen, text=u'ЦВЕТ'),
+#            'cue1':
+#                visual.ShapeStim(self.test_screen, units=None, lineWidth=4,
+#                                 pos=[0, 0], lineColor='white',
+#                                 closeShape=False,
+#                                 vertices=((0, -10), (0, 10),
+#                                           (-10, 0), (0, 10), (10, 0))),
+#            'cue2':
+#                visual.ShapeStim(self.test_screen, units=None, lineWidth=4,
+#                                 pos=[0, 0], lineColor='white',
+#                                 closeShape=False,
+#                                 vertices=((0, 10), (0, -10),
+#                                           (-10, 0), (0, -10), (10, 0))),
             # Hints
-            'hint_cue1':
-                visual.TextStim(self.test_screen, 
-                                text=u'сравнить по форме', height=25,
-                                pos=[0, 100], color='white'),
-            'hint_cue2':
-                visual.TextStim(self.test_screen, 
-                                text=u'сравнить по цвету', height=25,
-                                pos=[0, -100], color='white'),
+#            'hint_cue1':
+#                visual.TextStim(self.test_screen,
+#                                text=u'сравнить по форме', height=25,
+#                                pos=[0, 100], color='white'),
+#            'hint_cue2':
+#                visual.TextStim(self.test_screen,
+#                                text=u'сравнить по цвету', height=25,
+#                                pos=[0, -100], color='white'),
             'hint_D':
                 visual.TextStim(self.test_screen, 
-                                text=u'D <- разные', height=25,
+                                text=u'D <- одинаковые', height=25,
                                 pos=[-330, 0], color='white'),
             'hint_L':
                 visual.TextStim(self.test_screen, 
-                                text=u'одинаковые -> L', height=25,
+                                text=u'разные -> L', height=25,
                                 pos=[330, 0], color='white')    
             }
 
@@ -166,14 +174,14 @@ class VisCRT (CogTest):
                     self.trial_stimuli['circle1'].setFillColor(self.colors['red'])
                     self.trial_stimuli['circle1'].setLineColor(self.colors['red'])
                 elif trial['fill1'] == 'contour':
-                    self.trial_stimuli['circle1'].setFillColor(None)
+                    self.trial_stimuli['circle1'].setFillColor(None, colorSpace='rgb255')
                     self.trial_stimuli['circle1'].setLineColor(self.colors['red'])
             elif trial['color1'] == 'green':
                 if trial['fill1'] == 'solid':
                     self.trial_stimuli['circle1'].setFillColor(self.colors['green'])
                     self.trial_stimuli['circle1'].setLineColor(self.colors['green'])
                 elif trial['fill1'] == 'contour':
-                    self.trial_stimuli['circle1'].setFillColor(None)
+                    self.trial_stimuli['circle1'].setFillColor(None, colorSpace='rgb255')
                     self.trial_stimuli['circle1'].setLineColor(self.colors['green'])
             self.trial_stimuli['circle1'].draw()
         elif trial['shape1'] == 'triangle':
@@ -182,14 +190,14 @@ class VisCRT (CogTest):
                     self.trial_stimuli['triangle1'].setFillColor(self.colors['red'])
                     self.trial_stimuli['triangle1'].setLineColor(self.colors['red'])
                 elif trial['fill1'] == 'contour':
-                    self.trial_stimuli['triangle1'].setFillColor(None)
+                    self.trial_stimuli['triangle1'].setFillColor(None, colorSpace='rgb255')
                     self.trial_stimuli['triangle1'].setLineColor(self.colors['red'])
             elif trial['color1'] == 'green':
                 if trial['fill1'] == 'solid':
                     self.trial_stimuli['triangle1'].setFillColor(self.colors['green'])
                     self.trial_stimuli['triangle1'].setLineColor(self.colors['green'])
                 elif trial['fill1'] == 'contour':
-                    self.trial_stimuli['triangle1'].setFillColor(None)
+                    self.trial_stimuli['triangle1'].setFillColor(None, colorSpace='rgb255')
                     self.trial_stimuli['triangle1'].setLineColor(self.colors['green'])   
             self.trial_stimuli['triangle1'].draw()
             
@@ -200,14 +208,14 @@ class VisCRT (CogTest):
                     self.trial_stimuli['circle2'].setFillColor(self.colors['red'])
                     self.trial_stimuli['circle2'].setLineColor(self.colors['red'])
                 elif trial['fill2'] == 'contour':
-                    self.trial_stimuli['circle2'].setFillColor(None)
+                    self.trial_stimuli['circle2'].setFillColor(None, colorSpace='rgb255')
                     self.trial_stimuli['circle2'].setLineColor(self.colors['red'])
             elif trial['color2'] == 'green':
                 if trial['fill2'] == 'solid':
                     self.trial_stimuli['circle2'].setFillColor(self.colors['green'])
                     self.trial_stimuli['circle2'].setLineColor(self.colors['green'])
                 elif trial['fill2'] == 'contour':
-                    self.trial_stimuli['circle2'].setFillColor(None)
+                    self.trial_stimuli['circle2'].setFillColor(None, colorSpace='rgb255')
                     self.trial_stimuli['circle2'].setLineColor(self.colors['green'])
             self.trial_stimuli['circle2'].draw()
         elif trial['shape2'] == 'triangle':
@@ -216,14 +224,14 @@ class VisCRT (CogTest):
                     self.trial_stimuli['triangle2'].setFillColor(self.colors['red'])
                     self.trial_stimuli['triangle2'].setLineColor(self.colors['red'])
                 elif trial['fill2'] == 'contour':
-                    self.trial_stimuli['triangle2'].setFillColor(None)
+                    self.trial_stimuli['triangle2'].setFillColor(None, colorSpace='rgb255')
                     self.trial_stimuli['triangle2'].setLineColor(self.colors['red'])
             elif trial['color2'] == 'green':
                 if trial['fill2'] == 'solid':
                     self.trial_stimuli['triangle2'].setFillColor(self.colors['green'])
                     self.trial_stimuli['triangle2'].setLineColor(self.colors['green'])
                 elif trial['fill2'] == 'contour':
-                    self.trial_stimuli['triangle2'].setFillColor(None)
+                    self.trial_stimuli['triangle2'].setFillColor(None, colorSpace='rgb255')
                     self.trial_stimuli['triangle2'].setLineColor(self.colors['green'])   
             self.trial_stimuli['triangle2'].draw()
 
@@ -232,8 +240,8 @@ class VisCRT (CogTest):
     def show_trial_screen(self):    
         # Hint
         if self.vars['series'] == 'training':
-            self.trial_stimuli['hint_cue1'].draw()
-            self.trial_stimuli['hint_cue2'].draw()
+#            self.trial_stimuli['hint_cue1'].draw()
+#            self.trial_stimuli['hint_cue2'].draw()
             self.trial_stimuli['hint_D'].draw()
             self.trial_stimuli['hint_L'].draw()
 
@@ -246,12 +254,12 @@ class VisCRT (CogTest):
                                       text=u'\
 Положи руки на стол, чтобы указательные пальцы располагались на клавишах L и D\n\
 Когда в центре экрана появится крестик, приготовься отвечать\n\
-На экране появятся две фигуры и стрелка\n\
-Если стрелка показывает НАВЕРХ, необходимо сравнить фигуры ПО ФОРМЕ\n\
-Если стрелка показывает ВНИЗ, необходимо сравнить фигуры ПО ЦВЕТУ\n\
+На экране появятся две фигуры и слово\n\
+Если в центре экрана слово ФОРМА, необходимо сравнить фигуры ПО ФОРМЕ\n\
+Если в центре экрана слово ЦВЕТ, необходимо сравнить фигуры ПО ЦВЕТУ\n\
 \n\
-Если фигуры СХОДНЫ, как можно быстрее нажми L\n\
-Если фигуры РАЗЛИЧАЮТСЯ, как можно быстрее нажми D\n\
+Если фигуры СХОДНЫ, как можно быстрее нажми D\n\
+Если фигуры РАЗЛИЧАЮТСЯ, как можно быстрее нажми L\n\
 \n\
 В начале будет серия тренировочных попыток\n\
 \n\
@@ -295,7 +303,7 @@ class VisCRT (CogTest):
                 instruction.draw()
                 self.show_trial_screen()
                 key_0.draw()
-                trial = choice(self.trial_dict['training'])
+                trial = choice(self.training_trials)
                 self.show_stim(trial)
                 self.test_screen.flip()
                 self.suspend(wait=0.5)

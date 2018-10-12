@@ -7,12 +7,14 @@ import sys
 import psutil
 import platform
 import psychopy
+import wx
 from datetime import datetime
 from psychopy import gui, core
 from testlist import test_battery
 from multiprocessing import freeze_support
+from psychopy import logging
 
-VERSION = '0.1'
+VERSION = 'v0.1'
 BATTERY_ID = '000000'
 
 
@@ -46,11 +48,49 @@ def launch():
                            i + '_end_time;')
         out_file.write('\n')
 
+    # Showing information dialog
+    intro = u'''
+Спасибо, что согласились участвовать в исследовании времени реакции!
+
+Предлагаем Вам пройти набор тестов, в которых нужно как можно быстрее и точнее \
+реагировать на стимулы (изображения или слова).
+
+Время выполнения заданий составляет ~15 минут в демо-версии и ~60 минут в полной версии. \
+Перед началом тестов программа соберет информацию о характеристиках Вашего компьютера:
+    - Название операционной системы
+    - Тип процессора
+    - Количество оперативной памяти
+    - Размер и частота обновления экрана
+    - Используемую версию Питона
+
+Данные и логи записываются в папке data. \
+В данный момент батарея находится на стадии тестирования, \
+поэтому я буду очень благодарен любой обратной связи. \
+Отправляйте обратную связь и результаты из папки data по адресу:
+ivan.a.voronin@gmail.com
+Страница проекта на гитхабе: 
+https://github.com/IvanVoronin/RT_tests
+
+С уважением,
+Иван Воронин'''
+
+    app = wx.App()
+    intro_dlg = wx.MessageDialog(None,
+                                 intro, 'Добро пожаловать',
+                                 wx.OK_DEFAULT | wx.CANCEL | wx.OK | wx.ALIGN_LEFT
+                                 | wx.ICON_INFORMATION)
+
+    resp = intro_dlg.ShowModal()
+    if resp != wx.ID_OK:
+        core.wait(1)
+        core.quit()
+        sys.exit(0)
+
     # Show the ID questionnaire
     info_dlg = gui.Dlg(title=u'Начать эксперимент')
 
     info_dlg.addField(u'ID:', u'0001')
-    info_dlg.addField(u'Имя:', u'Иван Дурак')
+    info_dlg.addField(u'Имя:', u'')
     info_dlg.addField(u'Дата рождения:', '01.01.1990')
     info_dlg.addField(u'Пол:', choices=[u'Мужской',
                                         u'Женский'])
@@ -80,13 +120,38 @@ def launch():
         core.quit()
         sys.exit(0)
 
-    out_file.write(test_mode + ';' + \
-                   ID + ';' + \
-                   name + ';' + \
-                   str(age) + ';' + \
+    out_file.write(test_mode + ';' +
+                   ID + ';' +
+                   name + ';' +
+                   str(age) + ';' +
                    sex + ';')
-    out_dir = str(ID) + START_TIME.strftime('_%Y-%m-%d_%H%M')
+    out_dir = START_TIME.strftime('%Y-%m-%d_%H%M__') + str(ID)
     os.mkdir('data/' + out_dir)
+
+    for test, run in zip(test_battery.values(), run_tests):
+        if not run:
+            test.status = 'skipped'
+
+    # Log the warnings
+    # TODO: Log in-test warnings, log interruptions, pauses and demonstrations
+    # TODO: Log test specifications
+    logging.console.setLevel(logging.WARNING)
+    log = logging.LogFile('data/' + out_dir + '/log.log',
+                          level=logging.INFO, filemode='w')
+
+    # The same window can be shared by tests
+    # Here you can put window specifications
+    test_screen = psychopy.visual.Window(fullscr=True, units='pix',
+                                         monitor=0, winType='pyglet')
+    test_screen.winHandle.activate()
+    test_screen.mouseVisible = False
+
+    screen_size = test_screen.size
+    fps = test_screen.getActualFrameRate()
+    frame_duration = test_screen.getMsPerFrame()
+
+    logging.flush()
+    test_screen.flip()
 
     # Gather system information
     with open('data/' + out_dir + '/specs.txt', mode='w') as specs:
@@ -98,49 +163,69 @@ def launch():
         specs.write('Current CPU load: %0.1f%%\n' % psutil.cpu_percent())
         specs.write('Total RAM: %dMb\n' % int(psutil.virtual_memory().total / (1024 * 1024)))
         specs.write('Available RAM: %dMb\n' % int(psutil.virtual_memory().available / (1024 * 1024)))
+        specs.write('Screen size: %dx%d\n' % tuple(screen_size))
+        specs.write('FPS: %0.1f\n' % fps)
+        specs.write('Frame duration: mean=%0.1fms, SD=%0.1fms, median=%0.1fms\n' % frame_duration)
         specs.write('Python version: %s\n' % platform.python_version())
         specs.write('Python implementation: %s\n' % platform.python_implementation())
         specs.write('PsychoPy version: %s\n' % psychopy.__version__)
         specs.write('Battery version: %s\n' % VERSION)
         specs.write('Battery ID: %s\n' % BATTERY_ID)
 
-    for test, run in zip(test_battery.values(), run_tests):
-        if not run:
-            test.status = 'skipped'
-
     # Run the tests, collect stats
     for test in test_battery.itervalues():
+        log.write('\n======================================================================\n'
+                + 'STARTING ' + test.name + '\n')
         if test.status != 'skipped':
             try:
-                test.start(out_dir, mode=test_mode)
+                test.start(out_dir, mode=test_mode,
+                           test_screen=test_screen)
             except Exception:
                 test.status = 'failed'
                 test.end_time = datetime.now()
+                log.write('SOMETHING HAPPENED!\n')
+                logging.flush()
+                # If something went wrong we open the test screen again
+                # FIXME: Probably not working as expected
+                if test_screen._closed:
+                    test_screen = psychopy.visual.Window(fullscr=True, units='pix',
+                                                         monitor=0, winType='pyglet')
+                    test_screen.winHandle.activate()
+                    test_screen.mouseVisible = False
+                    logging.flush()
         else:
             test.start_time = datetime.now()
             test.end_time = datetime.now()
+            log.write(test.name + ' SKIPPED\n')
+        logging.flush()
+        log.write('FINISHING ' + test.name
+                + '\n======================================================================\n')
+
+
 
     END_TIME = datetime.now()
 
     BAT_STATUS = all([test.status == 'complete' for test in test_battery.values()])
-
     # TODO: Ввести секретную комбинацию клавиш для определения набора тестов
 
-    out_file.write(('complete' if BAT_STATUS else 'incomplete') + ';' + \
-                   START_TIME.strftime('%Y-%m-%d %H:%M:%S') + ';' + \
+    out_file.write(('complete' if BAT_STATUS else 'incomplete') + ';' +
+                   START_TIME.strftime('%Y-%m-%d %H:%M:%S') + ';' +
                    END_TIME.strftime('%Y-%m-%d %H:%M:%S') + ';')
     for test in test_battery.itervalues():
-        out_file.write(test.status + ';' + \
-                       test.start_time.strftime('%Y-%m-%d %H:%M:%S') + ';' + \
+        out_file.write(test.status + ';' +
+                       test.start_time.strftime('%Y-%m-%d %H:%M:%S') + ';' +
                        test.end_time.strftime('%Y-%m-%d %H:%M:%S') + ';')
     out_file.write('\n')
     out_file.close()
 
-    debriefing = gui.Dlg(title=u'Спасибо за участие!',
-                         labelButtonOK=u'Закончить',
-                         labelButtonCancel=u'Закончить')
-    debriefing.addText(u'Благодарим за участие в эксперименте!')
-    debriefing.show()
+    debriefing = psychopy.visual.TextStim(test_screen,
+                                          text=u'\
+Благодарим за участие в эксперименте!\n\n\
+Окно закроется автоматически')
+    debriefing.draw()
+    test_screen.flip()
+    core.wait(3)
+    test_screen.close()
     core.quit()
 
 

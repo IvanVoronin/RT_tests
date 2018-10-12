@@ -59,6 +59,7 @@ class CogTestRelease:
     keys = None
     
     test_screen = None
+    close_test_screen = True
     instr_stimuli = {}
     trial_stimuli = {}
     io = None
@@ -68,23 +69,27 @@ class CogTestRelease:
     invalidstrike = 0
     ncorrect = 0
     nfailed = 0
-    
+    trial_seq = 0  # This one is to check percent of correct properly
+
+    training_trials = None
+
     def __init__(self):
         pass
     
     def init_devices(self):
         # Initialize test screen
-        # TODO: Measure and record actual frame rate getActualFrameRate()
-        #       getMsPerFrame()
-        self.test_screen = visual.Window(fullscr=True, units='pix',
-                                         screen=1, winType='pyglet')        
-        self.test_screen.winHandle.activate()
+        if self.test_screen is not None:
+            self.close_test_screen = False
+        else:
+            self.test_screen = visual.Window(fullscr=True, units='pix',
+                                             winType='pyglet')
+            self.test_screen.winHandle.activate()
+
+        self.test_screen.mouseVisible = False
 
         # Initialize keyboard input
         self.io = iohub.launchHubServer()
         self.keyboard = self.io.devices.keyboard
-
-        self.test_screen.mouseVisible = False
 
     def init_attr(self):
         # Validity checks
@@ -107,14 +112,15 @@ class CogTestRelease:
         
         self.vars = {i: None for i in self.varnames}        
         
-    def start(self, data_folder, mode='Демо'):
+    def start(self, data_folder, mode='Демо', test_screen=None):
         self.init_attr()
                 
         # Make output folder
         DATA_FILE = 'data/' + data_folder + '/' + self.name +'.csv'
         self.data_file = open(DATA_FILE, mode='w')
         self.data_file.write(';'.join(self.varnames) + '\n')
-        
+
+        self.test_screen = test_screen
         self.init_devices()
         self.init_instr_stimuli()
         self.init_trial_stimuli() 
@@ -123,20 +129,24 @@ class CogTestRelease:
         # Start the test               
         # 1. Instruction
         self.vars['series'] = 'training'
+        # We will need this for demonstration
+        self.training_trials = self.trial_dict.pop('training')
+
         try:
             self.start_demonstration()
         except FinishTest:
             self.exit()
             return
 
-        self.keys = [x['cor_resp'] for x in self.trial_dict['training']]
-        trials = data.TrialHandler(self.trial_dict.pop('training'), 
+        self.keys = [x['cor_resp'] for x in self.training_trials]
+        trials = data.TrialHandler(self.training_trials,
                                    self.nreps, method='random')
         core.wait(1)
 
         self.maxtrials = self.maxtrain
         for trial in trials:
             # Run trial
+            self.trial_seq += 1
             self.totalN += 1
             self.vars['n'] = self.totalN
             self.vars['trial'] = trials.thisN + 1
@@ -147,15 +157,15 @@ class CogTestRelease:
             self.write_data()
 
             # Check status
-            if (float(self.ncorrect) / self.vars['trial'] >= self.mincorrect)\
-                and (self.vars['trial'] >= self.mintrain):
-                break
-            if self.vars['trial'] > self.mintrain:
-                try:
-                    self.check_status()
-                except FinishTest:
-                    self.exit()
-                    return            
+            if self.trial_seq >= self.mintrain:
+                if float(self.ncorrect) / self.trial_seq >= self.mincorrect:
+                    break
+                else:
+                    try:
+                        self.check_status()
+                    except FinishTest:
+                        self.exit()
+                        return
         
         # --------------------------------------------------------------------
         # 2. Main series
@@ -175,21 +185,23 @@ class CogTestRelease:
             pass
         
         for series in self.trial_dict:
+            self.nfailed = 0
             self.invalidstrike = 0
             self.ncorrect = 0
+            self.trial_seq = 0
             
             self.vars['series'] = series
             
             self.keys = [x['cor_resp'] for x in self.trial_dict[series]]
                     
             trials = data.TrialHandler(self.trial_dict[series], self.nreps,
-                                       method='fullRandom')
+                                       method='random')
             core.wait(1)
             for trial in trials:
                 if trials.thisN + 1 > self.maxtrials:
                     self.status = 'complete'
                     break
-                if trials.thisN >= self.mintrain:
+                if self.trial_seq >= self.mintrain:
                     try:
                         self.check_status()
                     except FinishTest:
@@ -199,7 +211,8 @@ class CogTestRelease:
                 # break after breaktrials number of trials
                 if trials.thisN > 0 and (trials.thisN % self.breaktrials) == 0:
                     self.make_a_break(self.breaktime)
-                
+
+                self.trial_seq += 1
                 self.totalN += 1
                 self.vars['n'] = self.totalN
                 self.vars['trial'] = trials.thisN + 1
@@ -227,6 +240,7 @@ class CogTestRelease:
                 self.nfailed += 1
                 self.invalidstrike = 0
                 self.ncorrect = 0
+                self.trial_seq = 0
                 self.instr_stimuli['instr_fail'].draw()
                 self.test_screen.flip()
                 core.wait(3)
@@ -241,33 +255,37 @@ class CogTestRelease:
         self.end_time = datetime.now()
         self.io.quit()
         self.data_file.close()
-        self.test_screen.close()
-    
+        if self.close_test_screen:
+            self.test_screen.close()
+
     def init_instr_stimuli(self):
         # Instruction for each series from self.trial_dict
         self.instr_stimuli = {
             'start_main':
                 visual.TextStim(self.test_screen, wrapWidth=600,
-                                text=u'Тренировочная серия закончилась\n\
-\n\
+                                text=u'\
+Тренировочная серия закончилась\n\n\
 Для начала основной серии нажми любую клавишу'),
             # Feedback text used in the training series
             'feedback':
                 visual.TextStim(self.test_screen, text='', 
-                                pos=[0, -100], color='black'),
+                                pos=[0, -100]),
             # Instruction shown when participant has to do smth to start
             'instr_start':
                 visual.TextStim(self.test_screen, text='',
-                                pos=[0, 100], color='black'),
+                                pos=[0, 100]),
             # Instruction shown in case of non-response
             'instr_nonresp':
                 visual.TextStim(self.test_screen, 
                                 text=u'Слишком медленно!',
-                                pos=[0, 100], color='black'),
+                                pos=[0, 100]),
             'instr_fail':
                 visual.TextStim(self.test_screen, 
-                                text=u'Слишком много ошибок!\nВнимательно посмотри инструкцию еще раз',
-                                pos=[0, 0], color='black')}
+                                text=u'\
+Слишком много ошибок!\n\
+Внимательно посмотри инструкцию еще раз\n\n\
+Нажми любую клавишу',
+                                pos=[0, 0])}
     
     # You are welcome to change this for CogTest instances
     # Here you define all test stimuli
@@ -309,8 +327,9 @@ class CogTestRelease:
 
     def make_a_break(self, breaktime):
         for i in reversed(range(breaktime)):
-            note = visual.TextStim(self.test_screen, text=u'Передышка!\n\
-                                        Тест продолжится через %d секунд' %(i),
+            note = visual.TextStim(self.test_screen, text=u'\
+Передышка!\n\
+Тест продолжится через %d секунд' %(i),
                                    pos=[0, 0], color='black')
             note.draw()
             self.test_screen.flip()
