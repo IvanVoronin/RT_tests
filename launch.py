@@ -11,6 +11,7 @@ import wx
 from datetime import datetime
 from psychopy import gui, core
 from testlist import test_battery
+from setup_console import setup_console
 from multiprocessing import freeze_support
 from psychopy import logging
 
@@ -19,6 +20,8 @@ BATTERY_ID = '000000'
 
 
 def launch():
+    setup_console()
+
     # This part aims to fix the problem with multitasking when making
     # executable using pyinstaller
     if getattr(sys, 'frozen', False):
@@ -76,7 +79,7 @@ https://github.com/IvanVoronin/RT_tests
 
     app = wx.App()
     intro_dlg = wx.MessageDialog(None,
-                                 intro, 'Добро пожаловать',
+                                 intro, u'Добро пожаловать',
                                  wx.OK_DEFAULT | wx.CANCEL | wx.OK | wx.ALIGN_LEFT
                                  | wx.ICON_INFORMATION)
 
@@ -91,7 +94,7 @@ https://github.com/IvanVoronin/RT_tests
 
     info_dlg.addField(u'ID:', u'0001')
     info_dlg.addField(u'Имя:', u'')
-    info_dlg.addField(u'Дата рождения:', '01.01.1990')
+    info_dlg.addField(u'Дата рождения:', u'01.01.1990')
     info_dlg.addField(u'Пол:', choices=[u'Мужской',
                                         u'Женский'])
 

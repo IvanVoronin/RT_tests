@@ -7,7 +7,6 @@ from datetime import datetime
 from collections import OrderedDict
 
 
-
 class FinishTest (Exception):
     pass
 
@@ -115,7 +114,7 @@ class CogTest:
         
         self.vars = {i: None for i in self.varnames}
         
-    def start(self, data_folder, mode='Демо', test_screen=None):
+    def start(self, data_folder, mode=u'Демо', test_screen=None):
         logging.console.setLevel(logging.WARNING)
         log = logging.LogFile('data/' + data_folder + '/' + self.name + '.log',
                               level=logging.INFO, filemode='w')
@@ -279,12 +278,12 @@ class CogTest:
 Для начала основной серии нажми любую клавишу'),
             # Feedback text used in the training series
             'feedback':
-                visual.TextStim(self.test_screen, text='', 
+                visual.TextStim(self.test_screen, text=u'',
                                 pos=[0, 0]),
             # Instruction shown when participant has to do smth to start
             # Not used here
             'instr_start':
-                visual.TextStim(self.test_screen, text='',
+                visual.TextStim(self.test_screen, text=u'',
                                 pos=[0, 100]),
             # Instruction shown in case of non-response
             'instr_nonresp':
