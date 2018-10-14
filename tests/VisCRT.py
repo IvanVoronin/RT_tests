@@ -104,6 +104,8 @@ class VisCRT (CogTest):
                               pos=[130, 0], lineWidth=6, 
                               lineColorSpace='rgb255',
                               fillColorSpace='rgb255'),
+            # FIXME: Почему-то все треугольники белые
+            # TODO: Исключить совпадающие формы
             'triangle1':
                 visual.ShapeStim(self.test_screen, units=None,
                                  pos=[-130, -0.33*40], lineWidth=6,
@@ -127,27 +129,7 @@ class VisCRT (CogTest):
                 visual.TextStim(self.test_screen, text=u'ФОРМА'),
             'cue2':
                 visual.TextStim(self.test_screen, text=u'ЦВЕТ'),
-#            'cue1':
-#                visual.ShapeStim(self.test_screen, units=None, lineWidth=4,
-#                                 pos=[0, 0], lineColor='white',
-#                                 closeShape=False,
-#                                 vertices=((0, -10), (0, 10),
-#                                           (-10, 0), (0, 10), (10, 0))),
-#            'cue2':
-#                visual.ShapeStim(self.test_screen, units=None, lineWidth=4,
-#                                 pos=[0, 0], lineColor='white',
-#                                 closeShape=False,
-#                                 vertices=((0, 10), (0, -10),
-#                                           (-10, 0), (0, -10), (10, 0))),
-            # Hints
-#            'hint_cue1':
-#                visual.TextStim(self.test_screen,
-#                                text=u'сравнить по форме', height=25,
-#                                pos=[0, 100], color='white'),
-#            'hint_cue2':
-#                visual.TextStim(self.test_screen,
-#                                text=u'сравнить по цвету', height=25,
-#                                pos=[0, -100], color='white'),
+
             'hint_D':
                 visual.TextStim(self.test_screen, 
                                 text=u'D <- одинаковые', height=25,

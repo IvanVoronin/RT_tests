@@ -370,7 +370,7 @@ class CogTestRelease:
             self.wait(trial)
         elif self.interruptkey in pressed:
             self.status = 'interrupted'
-        elif not set(self.keys).isdisjoint(pressed):
+        elif set(self.keys) == set(pressed):
             self.run_trial(trial)
         else:
             self.wait(trial)

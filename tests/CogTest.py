@@ -90,8 +90,6 @@ class CogTest:
         # Initialize keyboard input
         self.io = iohub.launchHubServer()
         self.keyboard = self.io.devices.keyboard
-
-
         
     def init_attr(self):
         # Validity checks

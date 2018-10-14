@@ -20,6 +20,13 @@ BATTERY_ID = '000000'
 
 
 def launch():
+    """Launch a test battery.
+
+    The test battery is stored in testlist.py.
+    This is to be called from the RT_test folder, otherwise some tests
+    may not be loaded when they contain a reference to other resources
+    (like the stimuli list in the VerbCRT).
+    """
     setup_console()
 
     # This part aims to fix the problem with multitasking when making
@@ -53,9 +60,9 @@ def launch():
 
     # Showing information dialog
     intro = u'''
-Спасибо, что согласились участвовать в исследовании времени реакции!
+Спасибо, что согласились поучаствовать в исследовании времени реакции!
 
-Предлагаем Вам пройти набор тестов, в которых нужно как можно быстрее и точнее \
+Предлагаю Вам пройти набор тестов, в которых нужно как можно быстрее и точнее \
 реагировать на стимулы (изображения или слова).
 
 Время выполнения заданий составляет ~15 минут в демо-версии и ~60 минут в полной версии. \
@@ -191,7 +198,7 @@ https://github.com/IvanVoronin/RT_tests
                 logging.flush()
                 # If something went wrong we open the test screen again
                 # FIXME: Probably not working as expected
-                if test_screen._closed:
+                if test_screen not in locals() or test_screen._closed:
                     test_screen = psychopy.visual.Window(fullscr=True, units='pix',
                                                          monitor=0, winType='pyglet')
                     test_screen.winHandle.activate()
