@@ -59,13 +59,23 @@ for i in figures2cue:
             trial['cor_resp'] = 'l'
     trial_dict2.append(trial)
 
+trial_dict2mod = []
+for i in trial_dict2:
+    if i['color1'] == i['color1'] and \
+       i['shape1'] == i['shape2'] and \
+       i['fill1'] == i['fill2']:
+        pass
+    else:
+        trial_dict2mod.append(i)
+
 
 class VisCRT (CogTest):
     name = 'VisCRT'
-    nreps = 1           # number of repeats within each trial dictionary
+    nreps = 2           # number of repeats within each trial dictionary
 
+    maxtrials = 120     # maximum number of trials in the main test
     mintrain = 10       # minimum number of training trials
-    maxtrain = 30      # maximum number of training trials
+    maxtrain = 30       # maximum number of training trials
 
     nonresptime = 7     # maximum non-response time (sec)
 
@@ -75,7 +85,7 @@ class VisCRT (CogTest):
     # (key on a keyboard)
     trial_dict = OrderedDict([
         ('training', trial_dict1),
-        ('main', trial_dict2)])
+        ('main', trial_dict2mod)])
 
     colors = {'red':   [230,   0,   0],
               'green': [  0, 170,   0],

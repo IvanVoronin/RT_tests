@@ -8,7 +8,7 @@ import os
 
 class SRT_rel (CogTestRelease):
     name = 'SRT_rel'
-    nreps = 100
+    nreps = 120
 
     trial_dict = OrderedDict(
         [('training', [{'target': 'center', 'cor_resp': ' '}]),

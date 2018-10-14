@@ -64,13 +64,18 @@ class CogTest:
     trial_stimuli = {}
     io = None
     keyboard = None
-    
+    data_file = None
+
     totalN = 0
     invalidstrike = 0
     ncorrect = 0
     nfailed = 0
     trial_seq = 0  # This one is to check percent of correct properly
-
+                   # Is it the same as trial.thisN?
+                   # No, because if we interrupt the test to show instruction,
+                   # we have to count the trials from zero.
+                   # If there were many errors before, it will interrupt again
+                   # imidiately.
     training_trials = None
     
     def __init__(self):
@@ -120,7 +125,7 @@ class CogTest:
         self.init_attr()
                 
         # Make output folder
-        DATA_FILE = 'data/' + data_folder + '/' + self.name +'.csv'
+        DATA_FILE = 'data/' + data_folder + '/' + self.name + '.csv'
         self.data_file = open(DATA_FILE, mode='w')
         self.data_file.write(';'.join(self.varnames) + '\n')
 
@@ -147,8 +152,11 @@ class CogTest:
                                    self.nreps, method='random')
         core.wait(1)
         
-        self.maxtrials = self.maxtrain
+        maxtrials = self.maxtrain
         for trial in trials:
+            if self.totalN > maxtrials:
+                self.status = 'interrupted'
+                self.exit()
             # Run trial
             self.trial_seq += 1
             self.totalN += 1
@@ -175,10 +183,11 @@ class CogTest:
         # --------------------------------------------------------------------
         # 2. Main series
         if mode == u'Демо':
-            self.maxtrials = self.ndemo
+            maxtrials = self.ndemo
         else:
-            self.maxtrials = 10000
-        
+            maxtrials = self.maxtrials
+        self.totalN = 0
+
         try:
             self.instr_stimuli['start_main'].draw()
             self.test_screen.flip()
@@ -203,7 +212,7 @@ class CogTest:
                                        method='random')
             core.wait(1)
             for trial in trials:
-                if trials.thisN + 1 > self.maxtrials:
+                if self.totalN + 1 > maxtrials:
                     self.status = 'complete'
                     break
                 if self.trial_seq >= self.mintrain:
@@ -235,7 +244,7 @@ class CogTest:
 
     def check_status(self):
         # If last response was correct we don't perform check
-        if (self.vars['accuracy'] != 'correct'):
+        if self.vars['accuracy'] != 'correct':
             # Strike of invalid responses or too many incorrect
             if (self.invalidstrike >= self.maxinvalidstrike) or \
                (float(self.ncorrect)/self.trial_seq <= self.mincorrect):

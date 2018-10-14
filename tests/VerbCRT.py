@@ -29,12 +29,12 @@ for i in ['training', 'series1', 'series2', 'series3']:
 
 class VerbCRT (CogTest):
     name = 'VerbCRT'
-    nreps = 1               # number of repeats within each trial dictionary
+    nreps = 1           # number of repeats within each trial dictionary
 
     mintrain = 10       # minimum number of training trials
-    maxtrain = 30      # maximum number of training trials
+    maxtrain = 30       # maximum number of training trials
 
-    nonresptime = 5         # maximum non-response time (sec)
+    nonresptime = 5     # maximum non-response time (sec)
 
     # This is trial dictionary passed to data.TrialHandler
     # Must contain training series

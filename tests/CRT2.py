@@ -10,7 +10,7 @@ import os
 
 class CRT2 (CogTest):
     name = 'CRT2'
-    nreps = 75      # number of repeats within each trial dictionary
+    nreps = 60         # number of repeats within each trial dictionary
 
     mintrain = 7       # minimum number of training trials
     maxtrain = 20      # maximum number of training trials

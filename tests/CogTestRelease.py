@@ -64,7 +64,8 @@ class CogTestRelease:
     trial_stimuli = {}
     io = None
     keyboard = None
-    
+    data_file = None
+
     totalN = 0
     invalidstrike = 0
     ncorrect = 0
@@ -147,8 +148,11 @@ class CogTestRelease:
                                    self.nreps, method='random')
         core.wait(1)
 
-        self.maxtrials = self.maxtrain
+        maxtrials = self.maxtrain
         for trial in trials:
+            if self.totalN + 1 > maxtrials:
+                self.status = 'interrupted'
+                self.exit()
             # Run trial
             self.trial_seq += 1
             self.totalN += 1
@@ -175,9 +179,9 @@ class CogTestRelease:
         # --------------------------------------------------------------------
         # 2. Main series
         if mode == u'Демо':
-            self.maxtrials = self.ndemo
+            maxtrials = self.ndemo
         else:
-            self.maxtrials = 10000
+            maxtrials = self.maxtrials
         
         try:
             self.instr_stimuli['start_main'].draw()
@@ -203,7 +207,7 @@ class CogTestRelease:
                                        method='random')
             core.wait(1)
             for trial in trials:
-                if trials.thisN + 1 > self.maxtrials:
+                if self.totalN + 1 > maxtrials:
                     self.status = 'complete'
                     break
                 if self.trial_seq >= self.mintrain:

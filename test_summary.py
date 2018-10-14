@@ -30,7 +30,7 @@ def get_test_summary(test_battery):
             parent_class = test.__class__.__bases__[0].__name__
             test.trial_dict.pop('training')
             trial_dict = [len(i) for i in test.trial_dict.values()]
-            total_trials = test.nreps * sum(trial_dict)
+            total_trials = min(test.nreps * sum(trial_dict), test.maxtrials)
             f.write(';'.join([
                 name,
                 parent_class,
