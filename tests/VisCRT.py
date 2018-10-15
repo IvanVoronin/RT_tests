@@ -104,37 +104,162 @@ class VisCRT (CogTest):
                                  vertices=((0, -10), (0, 10), (0, 0),
                                            (-10, 0), (10, 0))),
             # Trial stimuli
-            'circle1':
-                visual.Circle(self.test_screen, units=None, radius=40, 
-                              pos=[-130, 0], lineWidth=6, 
-                              lineColorSpace='rgb255',
-                              fillColorSpace='rgb255'),
-            'circle2':
-                visual.Circle(self.test_screen, units=None, radius=40, 
-                              pos=[130, 0], lineWidth=6, 
-                              lineColorSpace='rgb255',
-                              fillColorSpace='rgb255'),
-            # FIXME: Почему-то все треугольники белые
-            # TODO: Исключить совпадающие формы
-            'triangle1':
-                visual.ShapeStim(self.test_screen, units=None,
-                                 pos=[-130, -0.33*40], lineWidth=6,
-                                 closeShape=True,
-                                 vertices=(pol2cart(90,  1.17*40, units='deg'),
-                                           pol2cart(210, 1.17*40, units='deg'),
-                                           pol2cart(330, 1.17*40, units='deg')),
-                                 lineColorSpace='rgb255',
-                                 fillColorSpace='rgb255'),
-            'triangle2':
-                visual.ShapeStim(self.test_screen, units=None,
-                                 pos=[130, -0.33*40], lineWidth=6,
-                                 closeShape=True,
-                                 vertices=(pol2cart(90,  1.17*40, units='deg'),
-                                           pol2cart(210, 1.17*40, units='deg'),
-                                           pol2cart(330, 1.17*40, units='deg')),
-                                 lineColorSpace='rgb255',
-                                 fillColorSpace='rgb255'),
-            # Cues
+            'red': {
+                'solid': {
+                    'circle': [
+                        visual.Circle(self.test_screen, units=None, radius=40,
+                                      pos=[-130, 0], lineWidth=6,
+                                      lineColor=self.colors['red'],
+                                      fillColor=self.colors['red'],
+                                      lineColorSpace='rgb255',
+                                      fillColorSpace='rgb255'),
+                        visual.Circle(self.test_screen, units=None, radius=40,
+                                      pos=[130, 0], lineWidth=6,
+                                      lineColor=self.colors['red'],
+                                      fillColor=self.colors['red'],
+                                      lineColorSpace='rgb255',
+                                      fillColorSpace='rgb255')
+                    ],
+                    'triangle': [
+                        visual.ShapeStim(self.test_screen, units=None,
+                                         pos=[-130, -0.33 * 40], lineWidth=6,
+                                         closeShape=True,
+                                         vertices=(pol2cart(90, 1.17 * 40, units='deg'),
+                                                   pol2cart(210, 1.17 * 40, units='deg'),
+                                                   pol2cart(330, 1.17 * 40, units='deg')),
+                                         lineColor=self.colors['red'],
+                                         fillColor=self.colors['red'],
+                                         lineColorSpace='rgb255',
+                                         fillColorSpace='rgb255'),
+                        visual.ShapeStim(self.test_screen, units=None,
+                                         pos=[130, -0.33 * 40], lineWidth=6,
+                                         closeShape=True,
+                                         vertices=(pol2cart(90, 1.17 * 40, units='deg'),
+                                                   pol2cart(210, 1.17 * 40, units='deg'),
+                                                   pol2cart(330, 1.17 * 40, units='deg')),
+                                         lineColor=self.colors['red'],
+                                         fillColor=self.colors['red'],
+                                         lineColorSpace='rgb255',
+                                         fillColorSpace='rgb255')
+                    ]
+                },
+                'contour': {
+                    'circle': [
+                        visual.Circle(self.test_screen, units=None, radius=40,
+                                      pos=[-130, 0], lineWidth=6,
+                                      lineColor=self.colors['red'],
+                                      fillColor=None,
+                                      lineColorSpace='rgb255',
+                                      fillColorSpace='rgb255'),
+                        visual.Circle(self.test_screen, units=None, radius=40,
+                                      pos=[130, 0], lineWidth=6,
+                                      lineColor=self.colors['red'],
+                                      fillColor=None,
+                                      lineColorSpace='rgb255',
+                                      fillColorSpace='rgb255')
+                    ],
+                    'triangle': [
+                        visual.ShapeStim(self.test_screen, units=None,
+                                         pos=[-130, -0.33 * 40], lineWidth=6,
+                                         closeShape=True,
+                                         vertices=(pol2cart(90, 1.17 * 40, units='deg'),
+                                                   pol2cart(210, 1.17 * 40, units='deg'),
+                                                   pol2cart(330, 1.17 * 40, units='deg')),
+                                         lineColor=self.colors['red'],
+                                         fillColor=None,
+                                         lineColorSpace='rgb255',
+                                         fillColorSpace='rgb255'),
+                        visual.ShapeStim(self.test_screen, units=None,
+                                         pos=[130, -0.33 * 40], lineWidth=6,
+                                         closeShape=True,
+                                         vertices=(pol2cart(90, 1.17 * 40, units='deg'),
+                                                   pol2cart(210, 1.17 * 40, units='deg'),
+                                                   pol2cart(330, 1.17 * 40, units='deg')),
+                                         lineColor=self.colors['red'],
+                                         fillColor=None,
+                                         lineColorSpace='rgb255',
+                                         fillColorSpace='rgb255')
+                    ]
+                }
+            },
+            'green': {
+                'solid': {
+                    'circle': [
+                        visual.Circle(self.test_screen, units=None, radius=40,
+                                      pos=[-130, 0], lineWidth=6,
+                                      lineColor=self.colors['green'],
+                                      fillColor=self.colors['green'],
+                                      lineColorSpace='rgb255',
+                                      fillColorSpace='rgb255'),
+                        visual.Circle(self.test_screen, units=None, radius=40,
+                                      pos=[130, 0], lineWidth=6,
+                                      lineColor=self.colors['green'],
+                                      fillColor=self.colors['green'],
+                                      lineColorSpace='rgb255',
+                                      fillColorSpace='rgb255')
+                    ],
+                    'triangle': [
+                        visual.ShapeStim(self.test_screen, units=None,
+                                         pos=[-130, -0.33 * 40], lineWidth=6,
+                                         closeShape=True,
+                                         vertices=(pol2cart(90, 1.17 * 40, units='deg'),
+                                                   pol2cart(210, 1.17 * 40, units='deg'),
+                                                   pol2cart(330, 1.17 * 40, units='deg')),
+                                         lineColor=self.colors['green'],
+                                         fillColor=self.colors['green'],
+                                         lineColorSpace='rgb255',
+                                         fillColorSpace='rgb255'),
+                        visual.ShapeStim(self.test_screen, units=None,
+                                         pos=[130, -0.33 * 40], lineWidth=6,
+                                         closeShape=True,
+                                         vertices=(pol2cart(90, 1.17 * 40, units='deg'),
+                                                   pol2cart(210, 1.17 * 40, units='deg'),
+                                                   pol2cart(330, 1.17 * 40, units='deg')),
+                                         lineColor=self.colors['green'],
+                                         fillColor=self.colors['green'],
+                                         lineColorSpace='rgb255',
+                                         fillColorSpace='rgb255')
+                    ]
+                },
+                'contour': {
+                    'circle': [
+                        visual.Circle(self.test_screen, units=None, radius=40,
+                                      pos=[-130, 0], lineWidth=6,
+                                      lineColor=self.colors['green'],
+                                      fillColor=None,
+                                      lineColorSpace='rgb255',
+                                      fillColorSpace='rgb255'),
+                        visual.Circle(self.test_screen, units=None, radius=40,
+                                      pos=[130, 0], lineWidth=6,
+                                      lineColor=self.colors['green'],
+                                      fillColor=None,
+                                      lineColorSpace='rgb255',
+                                      fillColorSpace='rgb255')
+                    ],
+                    'triangle': [
+                        visual.ShapeStim(self.test_screen, units=None,
+                                         pos=[-130, -0.33 * 40], lineWidth=6,
+                                         closeShape=True,
+                                         vertices=(pol2cart(90, 1.17 * 40, units='deg'),
+                                                   pol2cart(210, 1.17 * 40, units='deg'),
+                                                   pol2cart(330, 1.17 * 40, units='deg')),
+                                         lineColor=self.colors['green'],
+                                         fillColor=None,
+                                         lineColorSpace='rgb255',
+                                         fillColorSpace='rgb255'),
+                        visual.ShapeStim(self.test_screen, units=None,
+                                         pos=[130, -0.33 * 40], lineWidth=6,
+                                         closeShape=True,
+                                         vertices=(pol2cart(90, 1.17 * 40, units='deg'),
+                                                   pol2cart(210, 1.17 * 40, units='deg'),
+                                                   pol2cart(330, 1.17 * 40, units='deg')),
+                                         lineColor=self.colors['green'],
+                                         fillColor=None,
+                                         lineColorSpace='rgb255',
+                                         fillColorSpace='rgb255')
+                    ]
+                }
+            },
             'cue1':
                 visual.TextStim(self.test_screen, text=u'ФОРМА'),
             'cue2':
@@ -160,72 +285,74 @@ class VisCRT (CogTest):
             self.trial_stimuli['cue2'].draw()
             
         # Left stimulus
-        if trial['shape1'] == 'circle':
-            if trial['color1'] == 'red':
-                if trial['fill1'] == 'solid':
-                    self.trial_stimuli['circle1'].setFillColor(self.colors['red'])
-                    self.trial_stimuli['circle1'].setLineColor(self.colors['red'])
-                elif trial['fill1'] == 'contour':
-                    self.trial_stimuli['circle1'].setFillColor(None, colorSpace='rgb255')
-                    self.trial_stimuli['circle1'].setLineColor(self.colors['red'])
-            elif trial['color1'] == 'green':
-                if trial['fill1'] == 'solid':
-                    self.trial_stimuli['circle1'].setFillColor(self.colors['green'])
-                    self.trial_stimuli['circle1'].setLineColor(self.colors['green'])
-                elif trial['fill1'] == 'contour':
-                    self.trial_stimuli['circle1'].setFillColor(None, colorSpace='rgb255')
-                    self.trial_stimuli['circle1'].setLineColor(self.colors['green'])
-            self.trial_stimuli['circle1'].draw()
-        elif trial['shape1'] == 'triangle':
-            if trial['color1'] == 'red':
-                if trial['fill1'] == 'solid':
-                    self.trial_stimuli['triangle1'].setFillColor(self.colors['red'])
-                    self.trial_stimuli['triangle1'].setLineColor(self.colors['red'])
-                elif trial['fill1'] == 'contour':
-                    self.trial_stimuli['triangle1'].setFillColor(None, colorSpace='rgb255')
-                    self.trial_stimuli['triangle1'].setLineColor(self.colors['red'])
-            elif trial['color1'] == 'green':
-                if trial['fill1'] == 'solid':
-                    self.trial_stimuli['triangle1'].setFillColor(self.colors['green'])
-                    self.trial_stimuli['triangle1'].setLineColor(self.colors['green'])
-                elif trial['fill1'] == 'contour':
-                    self.trial_stimuli['triangle1'].setFillColor(None, colorSpace='rgb255')
-                    self.trial_stimuli['triangle1'].setLineColor(self.colors['green'])   
-            self.trial_stimuli['triangle1'].draw()
-            
-        # Right stimulus
-        if trial['shape2'] == 'circle':
-            if trial['color2'] == 'red':
-                if trial['fill2'] == 'solid':
-                    self.trial_stimuli['circle2'].setFillColor(self.colors['red'])
-                    self.trial_stimuli['circle2'].setLineColor(self.colors['red'])
-                elif trial['fill2'] == 'contour':
-                    self.trial_stimuli['circle2'].setFillColor(None, colorSpace='rgb255')
-                    self.trial_stimuli['circle2'].setLineColor(self.colors['red'])
-            elif trial['color2'] == 'green':
-                if trial['fill2'] == 'solid':
-                    self.trial_stimuli['circle2'].setFillColor(self.colors['green'])
-                    self.trial_stimuli['circle2'].setLineColor(self.colors['green'])
-                elif trial['fill2'] == 'contour':
-                    self.trial_stimuli['circle2'].setFillColor(None, colorSpace='rgb255')
-                    self.trial_stimuli['circle2'].setLineColor(self.colors['green'])
-            self.trial_stimuli['circle2'].draw()
-        elif trial['shape2'] == 'triangle':
-            if trial['color2'] == 'red':
-                if trial['fill2'] == 'solid':
-                    self.trial_stimuli['triangle2'].setFillColor(self.colors['red'])
-                    self.trial_stimuli['triangle2'].setLineColor(self.colors['red'])
-                elif trial['fill2'] == 'contour':
-                    self.trial_stimuli['triangle2'].setFillColor(None, colorSpace='rgb255')
-                    self.trial_stimuli['triangle2'].setLineColor(self.colors['red'])
-            elif trial['color2'] == 'green':
-                if trial['fill2'] == 'solid':
-                    self.trial_stimuli['triangle2'].setFillColor(self.colors['green'])
-                    self.trial_stimuli['triangle2'].setLineColor(self.colors['green'])
-                elif trial['fill2'] == 'contour':
-                    self.trial_stimuli['triangle2'].setFillColor(None, colorSpace='rgb255')
-                    self.trial_stimuli['triangle2'].setLineColor(self.colors['green'])   
-            self.trial_stimuli['triangle2'].draw()
+        self.trial_stimuli[trial['color1']][trial['fill1']][trial['shape1']][0].draw()
+        self.trial_stimuli[trial['color2']][trial['fill2']][trial['shape2']][1].draw()
+        # if trial['shape1'] == 'circle':
+        #     if trial['color1'] == 'red':
+        #         if trial['fill1'] == 'solid':
+        #             self.trial_stimuli['circle1'].setFillColor(self.colors['red'])
+        #             self.trial_stimuli['circle1'].setLineColor(self.colors['red'])
+        #         elif trial['fill1'] == 'contour':
+        #             self.trial_stimuli['circle1'].setFillColor(None, colorSpace='rgb255')
+        #             self.trial_stimuli['circle1'].setLineColor(self.colors['red'])
+        #     elif trial['color1'] == 'green':
+        #         if trial['fill1'] == 'solid':
+        #             self.trial_stimuli['circle1'].setFillColor(self.colors['green'])
+        #             self.trial_stimuli['circle1'].setLineColor(self.colors['green'])
+        #         elif trial['fill1'] == 'contour':
+        #             self.trial_stimuli['circle1'].setFillColor(None, colorSpace='rgb255')
+        #             self.trial_stimuli['circle1'].setLineColor(self.colors['green'])
+        #     self.trial_stimuli['circle1'].draw()
+        # elif trial['shape1'] == 'triangle':
+        #     if trial['color1'] == 'red':
+        #         if trial['fill1'] == 'solid':
+        #             self.trial_stimuli['triangle1'].setFillColor(self.colors['red'])
+        #             self.trial_stimuli['triangle1'].setLineColor(self.colors['red'])
+        #         elif trial['fill1'] == 'contour':
+        #             self.trial_stimuli['triangle1'].setFillColor(None, colorSpace='rgb255')
+        #             self.trial_stimuli['triangle1'].setLineColor(self.colors['red'])
+        #     elif trial['color1'] == 'green':
+        #         if trial['fill1'] == 'solid':
+        #             self.trial_stimuli['triangle1'].setFillColor(self.colors['green'])
+        #             self.trial_stimuli['triangle1'].setLineColor(self.colors['green'])
+        #         elif trial['fill1'] == 'contour':
+        #             self.trial_stimuli['triangle1'].setFillColor(None, colorSpace='rgb255')
+        #             self.trial_stimuli['triangle1'].setLineColor(self.colors['green'])
+        #     self.trial_stimuli['triangle1'].draw()
+        #
+        # # Right stimulus
+        # if trial['shape2'] == 'circle':
+        #     if trial['color2'] == 'red':
+        #         if trial['fill2'] == 'solid':
+        #             self.trial_stimuli['circle2'].setFillColor(self.colors['red'])
+        #             self.trial_stimuli['circle2'].setLineColor(self.colors['red'])
+        #         elif trial['fill2'] == 'contour':
+        #             self.trial_stimuli['circle2'].setFillColor(None, colorSpace='rgb255')
+        #             self.trial_stimuli['circle2'].setLineColor(self.colors['red'])
+        #     elif trial['color2'] == 'green':
+        #         if trial['fill2'] == 'solid':
+        #             self.trial_stimuli['circle2'].setFillColor(self.colors['green'])
+        #             self.trial_stimuli['circle2'].setLineColor(self.colors['green'])
+        #         elif trial['fill2'] == 'contour':
+        #             self.trial_stimuli['circle2'].setFillColor(None, colorSpace='rgb255')
+        #             self.trial_stimuli['circle2'].setLineColor(self.colors['green'])
+        #     self.trial_stimuli['circle2'].draw()
+        # elif trial['shape2'] == 'triangle':
+        #     if trial['color2'] == 'red':
+        #         if trial['fill2'] == 'solid':
+        #             self.trial_stimuli['triangle2'].setFillColor(self.colors['red'])
+        #             self.trial_stimuli['triangle2'].setLineColor(self.colors['red'])
+        #         elif trial['fill2'] == 'contour':
+        #             self.trial_stimuli['triangle2'].setFillColor(None, colorSpace='rgb255')
+        #             self.trial_stimuli['triangle2'].setLineColor(self.colors['red'])
+        #     elif trial['color2'] == 'green':
+        #         if trial['fill2'] == 'solid':
+        #             self.trial_stimuli['triangle2'].setFillColor(self.colors['green'])
+        #             self.trial_stimuli['triangle2'].setLineColor(self.colors['green'])
+        #         elif trial['fill2'] == 'contour':
+        #             self.trial_stimuli['triangle2'].setFillColor(None, colorSpace='rgb255')
+        #             self.trial_stimuli['triangle2'].setLineColor(self.colors['green'])
+        #     self.trial_stimuli['triangle2'].draw()
 
     # You are welcome to change this for CogTest instances
     # Here you define the screen outlook
