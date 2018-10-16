@@ -155,7 +155,7 @@ https://github.com/IvanVoronin/RT_tests
     # The same window can be shared by tests
     # Here you can put window specifications
     test_screen = psychopy.visual.Window(size=(1024, 768),
-                                         # fullscr=True,
+                                         fullscr=True,
                                          units='pix',
                                          monitor=0, winType='pyglet')
     test_screen.winHandle.activate()
@@ -208,7 +208,7 @@ https://github.com/IvanVoronin/RT_tests
                 if test_screen not in locals() or test_screen._closed:
                     log.write('OPENING A NEW WINDOW\n')
                     test_screen = psychopy.visual.Window(size=(1024, 768),
-                                                         # fullscr=True,
+                                                         fullscr=True,
                                                          units='pix',
                                                          monitor=0, winType='pyglet')
                     test_screen.winHandle.activate()
