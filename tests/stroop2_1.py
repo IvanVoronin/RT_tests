@@ -21,7 +21,7 @@ import os
 
 class stroop2_1 (CogTest):
     name = 'stroop2_1'
-    nreps = 40          # number of repeats within each trial dictionary
+    nreps = 20          # number of repeats within each trial dictionary
 
     mintrain = 10       # minimum number of training trials
     maxtrain = 30       # maximum number of training trials
@@ -29,7 +29,7 @@ class stroop2_1 (CogTest):
     nonresptime = 5     # maximum non-response time (sec)
     
     colors = {'red':   [230,   0,   0],
-              'green': [  0, 170,   0],
+              'green': [  0, 130,   0],
               'blue':  [  0, 100, 255]}
 
     # This is trial dictionary passed to data.TrialHandler
@@ -38,8 +38,12 @@ class stroop2_1 (CogTest):
     # (key on a keyboard)
     trial_dict = OrderedDict(
         [('training', [{'word': u'XXXXXXX', 'color': 'red',   'cor_resp': 'd'},
+                       {'word': u'XXXXXXX', 'color': 'green', 'cor_resp': 'l'},
+                       {'word': u'XXXXXXX', 'color': 'red', 'cor_resp': 'd'},
                        {'word': u'XXXXXXX', 'color': 'green', 'cor_resp': 'l'}]),
          ('main',     [{'word': u'XXXXXXX', 'color': 'red',   'cor_resp': 'd'},
+                       {'word': u'XXXXXXX', 'color': 'green', 'cor_resp': 'l'},
+                       {'word': u'XXXXXXX', 'color': 'red', 'cor_resp': 'd'},
                        {'word': u'XXXXXXX', 'color': 'green', 'cor_resp': 'l'}])])
 
     # You are welcome to change this for CogTest instances
@@ -106,13 +110,12 @@ class stroop2_1 (CogTest):
                                       wrapWidth=1.8*self.test_screen.size[0],
                                       pos=[0, 0.35*self.test_screen.size[1]],
                                       text=u'\
-Положи руки на стол, чтобы указательные пальцы располагались на клавишах L и D\n\
-Как только в центре экрана появится белый крест, приготовься отвечать\n\
-На экране появятся символы ХХХХХХХ\n\
-Если символы написаны КРАСНЫМ цветом, как можно быстрее нажми D\n\
-Если символы написаны ЗЕЛЕНЫМ цветом, как можно быстрее нажми L\n\
-\n\
-В начале будет серия тренировочных попыток\n\
+Положи руки на стол, чтобы указательные пальцы располагались на клавишах L и D.\n\
+Как только в центре экрана появится белый крест, приготовься отвечать.\n\
+На экране появятся символы ХХХХХХХ.\n\
+Если символы написаны КРАСНЫМ цветом, как можно быстрее нажми D.\n\
+Если символы написаны ЗЕЛЕНЫМ цветом, как можно быстрее нажми L.\n\
+В начале будет серия тренировочных попыток.\n\
 \n\
 Для продолжения нажми любую клавишу')
         # This is screen width-to-height ratio

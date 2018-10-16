@@ -65,7 +65,7 @@ def launch():
 Предлагаю Вам пройти набор тестов, в которых нужно как можно быстрее и точнее
 реагировать на стимулы (изображения или слова).
 
-Время выполнения заданий составляет ~20 минут в демо-версии и ~90 минут в полной версии. 
+Время выполнения заданий составляет ~20 минут в демо-версии и ~50 минут в полной версии. 
 В тесте установлено общее ограничение времени 90 минут. Тест можно прервать во время демонстрации
 или между тренировочной и основной сериями, нажав кнопку Y.\
 
@@ -154,7 +154,9 @@ https://github.com/IvanVoronin/RT_tests
 
     # The same window can be shared by tests
     # Here you can put window specifications
-    test_screen = psychopy.visual.Window(fullscr=True, units='pix',
+    test_screen = psychopy.visual.Window(size=(1024, 768),
+                                         # fullscr=True,
+                                         units='pix',
                                          monitor=0, winType='pyglet')
     test_screen.winHandle.activate()
     test_screen.mouseVisible = False
@@ -196,15 +198,18 @@ https://github.com/IvanVoronin/RT_tests
             try:
                 test.start(out_dir, mode=test_mode,
                            test_screen=test_screen)
-            except Exception:
+            except Exception as e:
                 test.status = 'failed'
                 test.end_time = datetime.now()
                 log.write('SOMETHING HAPPENED!\n')
+                log.write('EXCEPTION: %s' % e)
                 # If something went wrong we open the test screen again
                 # FIXME: Probably not working as expected
                 if test_screen not in locals() or test_screen._closed:
                     log.write('OPENING A NEW WINDOW\n')
-                    test_screen = psychopy.visual.Window(fullscr=True, units='pix',
+                    test_screen = psychopy.visual.Window(size=(1024, 768),
+                                                         # fullscr=True,
+                                                         units='pix',
                                                          monitor=0, winType='pyglet')
                     test_screen.winHandle.activate()
                     test_screen.mouseVisible = False

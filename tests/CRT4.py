@@ -10,7 +10,7 @@ import os
 
 class CRT4 (CogTest):
     name = 'CRT4'
-    nreps = 20
+    nreps = 10
 
     mintrain = 7       # minimum number of training trials
     maxtrain = 20      # maximum number of training trials
@@ -23,8 +23,16 @@ class CRT4 (CogTest):
         [('training', [{'target': 'stim1', 'cor_resp': 'p'},
                        {'target': 'stim2', 'cor_resp': 'l'},
                        {'target': 'stim3', 'cor_resp': 'd'},
+                       {'target': 'stim4', 'cor_resp': 'e'},
+                       {'target': 'stim1', 'cor_resp': 'p'},
+                       {'target': 'stim2', 'cor_resp': 'l'},
+                       {'target': 'stim3', 'cor_resp': 'd'},
                        {'target': 'stim4', 'cor_resp': 'e'}]),
          ('main',     [{'target': 'stim1', 'cor_resp': 'p'},
+                       {'target': 'stim2', 'cor_resp': 'l'},
+                       {'target': 'stim3', 'cor_resp': 'd'},
+                       {'target': 'stim4', 'cor_resp': 'e'},
+                       {'target': 'stim1', 'cor_resp': 'p'},
                        {'target': 'stim2', 'cor_resp': 'l'},
                        {'target': 'stim3', 'cor_resp': 'd'},
                        {'target': 'stim4', 'cor_resp': 'e'}])])
@@ -114,14 +122,11 @@ class CRT4 (CogTest):
                                       pos=[0, 0.3*self.test_screen.size[1]],
                                       text=u'\
 Положи руки на стол, чтобы указательные пальцы располагались на клавишах L и D,\n\
-а средние пальцы - на клавишах P и E (как на рисунке)\n\
-Когда в центре экрана появится крестик, приготовься отвечать\n\
-В одном из кругов появится белая точка\n\
-Если точка появилась в ПРАВОМ ВЕРХНЕМ круге, как можно быстрее нажми P\n\
-Если точка появилась в ПРАВОМ НИЖНЕМ круге, как можно быстрее нажми L\n\
-Если точка появилась в ЛЕВОМ ВЕРХНЕМ круге, как можно быстрее нажми E\n\
-Если точка появилась в ЛЕВОМ НИЖНЕМ круге, как можно быстрее нажми D\n\
-В начале будет серия тренировочных попыток\n\
+а средние пальцы - на клавишах P и E (как на рисунке).\n\
+Когда в центре экрана появится крестик, приготовься отвечать.\n\
+В одном из кругов появится белая точка.\n\
+Как можно быстрее нажми на клавишу, которая соответствует позиции точки.\n\
+В начале будет серия тренировочных попыток.\n\
 \n\
 Для продолжения нажми любую клавишу')
         # This is screen width-to-height ratio

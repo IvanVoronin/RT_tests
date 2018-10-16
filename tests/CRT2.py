@@ -10,7 +10,7 @@ import os
 
 class CRT2 (CogTest):
     name = 'CRT2'
-    nreps = 30         # number of repeats within each trial dictionary
+    nreps = 20         # number of repeats within each trial dictionary
 
     mintrain = 7       # minimum number of training trials
     maxtrain = 20      # maximum number of training trials
@@ -21,9 +21,14 @@ class CRT2 (CogTest):
     # (key on a keyboard)
     trial_dict = OrderedDict(
         [('training', [{'target': 'left', 'cor_resp': 'd'},
+                       {'target': 'right', 'cor_resp': 'l'},
+                       {'target': 'left', 'cor_resp': 'd'},
                        {'target': 'right', 'cor_resp': 'l'}]),
          ('main',     [{'target': 'left', 'cor_resp': 'd'},
-                       {'target': 'right', 'cor_resp': 'l'}])])
+                       {'target': 'right', 'cor_resp': 'l'},
+                       {'target': 'left', 'cor_resp': 'd'},
+                       {'target': 'right', 'cor_resp': 'l'}
+                       ])])
 
     # You are welcome to change this for CogTest instances
     # Here you define all test stimuli
@@ -79,12 +84,12 @@ class CRT2 (CogTest):
                                       wrapWidth=1.8*self.test_screen.size[0],
                                       pos=[0, 0.35*self.test_screen.size[1]],
                                       text=u'\
-Положи руки на клавиатуру, чтобы указательные пальцы располагались на клавишах L и D\n\
-Когда в центре экрана появится крестик, приготовься отвечать\n\
-В одном из кругов появится белая точка\n\
-Если точка появилась в ПРАВОМ круге, как можно быстрее нажми L\n\
-Если точка появилась в ЛЕВОМ круге, как можно быстрее нажми D\n\
-В начале будет серия тренировочных попыток\n\
+Положи руки на клавиатуру, чтобы указательные пальцы располагались на клавишах L и D.\n\
+Когда в центре экрана появится крестик, приготовься отвечать.\n\
+В одном из кругов появится белая точка.\n\
+Если точка появилась в ПРАВОМ круге, как можно быстрее нажми L.\n\
+Если точка появилась в ЛЕВОМ круге, как можно быстрее нажми D.\n\
+В начале будет серия тренировочных попыток.\n\
 \n\
 Для продолжения нажми любую клавишу')
         # This is screen width-to-height ratio

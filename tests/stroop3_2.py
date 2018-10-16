@@ -29,7 +29,7 @@ class stroop3_2 (CogTest):
     nonresptime = 5     # maximum non-response time (sec)
 
     colors = {'red':   [230,   0,   0],
-              'green': [  0, 170,   0],
+              'green': [  0, 130,   0],
               'blue':  [  0, 100, 255]}
 
     # This is trial dictionary passed to data.TrialHandler
@@ -41,7 +41,7 @@ class stroop3_2 (CogTest):
                        {'word': u'ЗЕЛЁНЫЙ', 'color': 'red',   'cor_resp': 'd', 'type': 'incongr'},
                        {'word': u'ГОЛУБОЙ', 'color': 'red',   'cor_resp': 'd', 'type': 'incongr'},
                        {'word': u'КРАСНЫЙ', 'color': 'green', 'cor_resp': 'l', 'type': 'incongr'},
-                       {'word': u'ЗЕЛЁНЫЙй', 'color': 'green', 'cor_resp': 'l', 'type': 'congr'},
+                       {'word': u'ЗЕЛЁНЫЙ', 'color': 'green', 'cor_resp': 'l', 'type': 'congr'},
                        {'word': u'ГОЛУБОЙ', 'color': 'green', 'cor_resp': 'l', 'type': 'incongr'},
                        {'word': u'КРАСНЫЙ', 'color': 'blue',  'cor_resp': ' ', 'type': 'incongr'},
                        {'word': u'ЗЕЛЁНЫЙ', 'color': 'blue',  'cor_resp': ' ', 'type': 'incongr'},
@@ -130,18 +130,17 @@ class stroop3_2 (CogTest):
     # Here you define the test demonstration/instruction
     def start_demonstration(self):
         instruction = visual.TextStim(self.test_screen,
-                                      wrapWidth=1.8*self.test_screen.size[0],
-                                      pos=[0, 0.35*self.test_screen.size[1]],
+                                      wrapWidth=0.9*self.test_screen.size[0],
+                                      pos=[0, 0.30*self.test_screen.size[1]],
                                       text=u'\
 Положи руки на стол, чтобы указательные пальцы располагались на клавишах L и D,\n\
-а большой палец правой руки - на клавише ПРОБЕЛ (как на картинке)\n\
-Как только в центре экрана появится белый крест, приготовься отвечать\n\
-На экране появится слово\n\
-Если слово написано КРАСНЫМ цветом, как можно быстрее нажми D\n\
-Если слово написано ЗЕЛЕНЫМ цветом, как можно быстрее нажми L\n\
-Если слово написано ГОЛУБЫМ цветом, как можно быстрее нажми ПРОБЕЛ\n\
-\n\
-В начале будет серия тренировочных попыток\n\
+а большой палец правой руки - на клавише ПРОБЕЛ (как на картинке).\n\
+Как только в центре экрана появится белый крест, приготовься отвечать.\n\
+На экране появится слово.\n\
+Если слово написано КРАСНЫМ цветом, как можно быстрее нажми D.\n\
+Если слово написано ЗЕЛЕНЫМ цветом, как можно быстрее нажми L.\n\
+Если слово написано СИНИМ цветом, как можно быстрее нажми ПРОБЕЛ.\n\
+В начале будет серия тренировочных попыток.\n\
 \n\
 Для продолжения нажми любую клавишу')
         # This is screen width-to-height ratio

@@ -29,7 +29,7 @@ class stroop3_1 (CogTest):
     nonresptime = 5     # maximum non-response time (sec)
     
     colors = {'red':   [230,   0,   0],
-              'green': [  0, 170,   0],
+              'green': [  0, 130,   0],
               'blue':  [  0, 100, 255]}
     
     trial_dict = OrderedDict(
@@ -115,18 +115,17 @@ class stroop3_1 (CogTest):
     # Here you define the test demonstration/instruction
     def start_demonstration(self):
         instruction = visual.TextStim(self.test_screen,
-                                      wrapWidth=1.8*self.test_screen.size[0],
-                                      pos=[0, 0.35*self.test_screen.size[1]],
+                                      wrapWidth=0.9*self.test_screen.size[0],
+                                      pos=[0, 0.30*self.test_screen.size[1]],
                                       text=u'\
 Положи руки на стол, чтобы указательные пальцы располагались на клавишах L и D,\n\
-а большой палец правой руки - на клавише ПРОБЕЛ (как на картинке)\n\
-Как только в центре экрана появится белый крест, приготовься отвечать\n\
-На экране появятся символы ХХХХХХХ\n\
-Если символы написаны КРАСНЫМ цветом, как можно быстрее нажми D\n\
-Если символы написаны ЗЕЛЕНЫМ цветом, как можно быстрее нажми L\n\
-Если символы написаны ГОЛУБЫМ цветом, как можно быстрее нажми ПРОБЕЛ\n\
-\n\
-В начале будет серия тренировочных попыток\n\
+а большой палец правой руки - на клавише ПРОБЕЛ (как на картинке).\n\
+Как только в центре экрана появится белый крест, приготовься отвечать.\n\
+На экране появятся символы ХХХХХХХ.\n\
+Если символы написаны КРАСНЫМ цветом, как можно быстрее нажми D.\n\
+Если символы написаны ЗЕЛЕНЫМ цветом, как можно быстрее нажми L.\n\
+Если символы написаны СИНИМ цветом, как можно быстрее нажми ПРОБЕЛ.\n\
+В начале будет серия тренировочных попыток.\n\
 \n\
 Для продолжения нажми любую клавишу')
         # This is screen width-to-height ratio
@@ -171,7 +170,7 @@ class stroop3_1 (CogTest):
                 instruction.draw()
                 self.show_trial_screen()
                 key_0.draw()
-                trial = choice(self.training)
+                trial = choice(self.training_trials)
                 self.show_stim(trial)
                 self.test_screen.flip()
                 self.suspend(wait=0.5)

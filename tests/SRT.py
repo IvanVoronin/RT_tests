@@ -9,8 +9,8 @@ import os
 
 class SRT (CogTest):
     name = 'SRT'
-    nreps = 60         # number of repeats within each trial dictionary
-
+    nreps = 80         # number of repeats within each trial dictionary
+    breaktrials = 10
     # This is trial dictionary passed to data.TrialHandler
     # Must contain training series
     # Each series must contain 'cor_resp' which is correct response
@@ -46,10 +46,10 @@ class SRT (CogTest):
                                       wrapWidth=1.8*self.test_screen.size[0],
                                       pos=[0, 0.35*self.test_screen.size[1]],
                                       text=u'\
-Положи руку на стол, чтобы большой палец располагался на клавише ПРОБЕЛ\n\
-Когда в центре экрана появится белый круг, приготовься отвечать\n\
-Как только в центре круга появится белая точка, как можно быстрее нажми на ПРОБЕЛ\n\
-В начале будет серия тренировочных попыток\n\
+Положи руку на стол, чтобы большой палец располагался на клавише ПРОБЕЛ.\n\
+Когда в центре экрана появится белый круг, приготовься отвечать.\n\
+Как только в центре круга появится белая точка, как можно быстрее нажми на ПРОБЕЛ.\n\
+В начале будет серия тренировочных попыток.\n\
 \n\
 Для продолжения нажми любую клавишу')
         # This is screen width-to-height ratio

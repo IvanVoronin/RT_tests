@@ -7,7 +7,7 @@ from tests import stroop2_1, stroop2_2, stroop3_1, stroop3_2
 from tests import VisCRT, SRT_rel, CRT2_rel
 
 # Total time limit
-TIME_LIMIT = 90
+TIME_LIMIT = 180
 
 # This is the list of the tests to launch
 test_battery = OrderedDict([

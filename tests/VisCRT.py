@@ -84,11 +84,11 @@ class VisCRT (CogTest):
     # Each series must contain 'cor_resp' which is correct response
     # (key on a keyboard)
     trial_dict = OrderedDict([
-        ('training', trial_dict1),
+        ('training', trial_dict2mod),
         ('main', trial_dict2mod)])
 
     colors = {'red':   [230,   0,   0],
-              'green': [  0, 170,   0],
+              'green': [  0, 130,   0],
               'blue':  [  0, 100, 255]}
 
     # You are welcome to change this for CogTest instances
@@ -287,72 +287,6 @@ class VisCRT (CogTest):
         # Left stimulus
         self.trial_stimuli[trial['color1']][trial['fill1']][trial['shape1']][0].draw()
         self.trial_stimuli[trial['color2']][trial['fill2']][trial['shape2']][1].draw()
-        # if trial['shape1'] == 'circle':
-        #     if trial['color1'] == 'red':
-        #         if trial['fill1'] == 'solid':
-        #             self.trial_stimuli['circle1'].setFillColor(self.colors['red'])
-        #             self.trial_stimuli['circle1'].setLineColor(self.colors['red'])
-        #         elif trial['fill1'] == 'contour':
-        #             self.trial_stimuli['circle1'].setFillColor(None, colorSpace='rgb255')
-        #             self.trial_stimuli['circle1'].setLineColor(self.colors['red'])
-        #     elif trial['color1'] == 'green':
-        #         if trial['fill1'] == 'solid':
-        #             self.trial_stimuli['circle1'].setFillColor(self.colors['green'])
-        #             self.trial_stimuli['circle1'].setLineColor(self.colors['green'])
-        #         elif trial['fill1'] == 'contour':
-        #             self.trial_stimuli['circle1'].setFillColor(None, colorSpace='rgb255')
-        #             self.trial_stimuli['circle1'].setLineColor(self.colors['green'])
-        #     self.trial_stimuli['circle1'].draw()
-        # elif trial['shape1'] == 'triangle':
-        #     if trial['color1'] == 'red':
-        #         if trial['fill1'] == 'solid':
-        #             self.trial_stimuli['triangle1'].setFillColor(self.colors['red'])
-        #             self.trial_stimuli['triangle1'].setLineColor(self.colors['red'])
-        #         elif trial['fill1'] == 'contour':
-        #             self.trial_stimuli['triangle1'].setFillColor(None, colorSpace='rgb255')
-        #             self.trial_stimuli['triangle1'].setLineColor(self.colors['red'])
-        #     elif trial['color1'] == 'green':
-        #         if trial['fill1'] == 'solid':
-        #             self.trial_stimuli['triangle1'].setFillColor(self.colors['green'])
-        #             self.trial_stimuli['triangle1'].setLineColor(self.colors['green'])
-        #         elif trial['fill1'] == 'contour':
-        #             self.trial_stimuli['triangle1'].setFillColor(None, colorSpace='rgb255')
-        #             self.trial_stimuli['triangle1'].setLineColor(self.colors['green'])
-        #     self.trial_stimuli['triangle1'].draw()
-        #
-        # # Right stimulus
-        # if trial['shape2'] == 'circle':
-        #     if trial['color2'] == 'red':
-        #         if trial['fill2'] == 'solid':
-        #             self.trial_stimuli['circle2'].setFillColor(self.colors['red'])
-        #             self.trial_stimuli['circle2'].setLineColor(self.colors['red'])
-        #         elif trial['fill2'] == 'contour':
-        #             self.trial_stimuli['circle2'].setFillColor(None, colorSpace='rgb255')
-        #             self.trial_stimuli['circle2'].setLineColor(self.colors['red'])
-        #     elif trial['color2'] == 'green':
-        #         if trial['fill2'] == 'solid':
-        #             self.trial_stimuli['circle2'].setFillColor(self.colors['green'])
-        #             self.trial_stimuli['circle2'].setLineColor(self.colors['green'])
-        #         elif trial['fill2'] == 'contour':
-        #             self.trial_stimuli['circle2'].setFillColor(None, colorSpace='rgb255')
-        #             self.trial_stimuli['circle2'].setLineColor(self.colors['green'])
-        #     self.trial_stimuli['circle2'].draw()
-        # elif trial['shape2'] == 'triangle':
-        #     if trial['color2'] == 'red':
-        #         if trial['fill2'] == 'solid':
-        #             self.trial_stimuli['triangle2'].setFillColor(self.colors['red'])
-        #             self.trial_stimuli['triangle2'].setLineColor(self.colors['red'])
-        #         elif trial['fill2'] == 'contour':
-        #             self.trial_stimuli['triangle2'].setFillColor(None, colorSpace='rgb255')
-        #             self.trial_stimuli['triangle2'].setLineColor(self.colors['red'])
-        #     elif trial['color2'] == 'green':
-        #         if trial['fill2'] == 'solid':
-        #             self.trial_stimuli['triangle2'].setFillColor(self.colors['green'])
-        #             self.trial_stimuli['triangle2'].setLineColor(self.colors['green'])
-        #         elif trial['fill2'] == 'contour':
-        #             self.trial_stimuli['triangle2'].setFillColor(None, colorSpace='rgb255')
-        #             self.trial_stimuli['triangle2'].setLineColor(self.colors['green'])
-        #     self.trial_stimuli['triangle2'].draw()
 
     # You are welcome to change this for CogTest instances
     # Here you define the screen outlook
@@ -371,16 +305,16 @@ class VisCRT (CogTest):
                                       wrapWidth=1.8*self.test_screen.size[0],
                                       pos=[0, 0.30*self.test_screen.size[1]],
                                       text=u'\
-Положи руки на стол, чтобы указательные пальцы располагались на клавишах L и D\n\
-Когда в центре экрана появится крестик, приготовься отвечать\n\
-На экране появятся две фигуры и слово\n\
-Если в центре экрана слово ФОРМА, необходимо сравнить фигуры ПО ФОРМЕ\n\
-Если в центре экрана слово ЦВЕТ, необходимо сравнить фигуры ПО ЦВЕТУ\n\
+Положи руки на стол, чтобы указательные пальцы располагались на клавишах L и D.\n\
+Когда в центре экрана появится крестик, приготовься отвечать.\n\
+На экране появятся две фигуры и слово.\n\
+Если в центре экрана слово ФОРМА, необходимо сравнить фигуры ПО ФОРМЕ.\n\
+Если в центре экрана слово ЦВЕТ, необходимо сравнить фигуры ПО ЦВЕТУ.\n\
 \n\
-Если фигуры СХОДНЫ, как можно быстрее нажми D\n\
-Если фигуры РАЗЛИЧАЮТСЯ, как можно быстрее нажми L\n\
+Если фигуры СХОДНЫ, как можно быстрее нажми D.\n\
+Если фигуры РАЗЛИЧАЮТСЯ, как можно быстрее нажми L.\n\
 \n\
-В начале будет серия тренировочных попыток\n\
+В начале будет серия тренировочных попыток.\n\
 \n\
 Для продолжения нажми любую клавишу')
         # This is screen width-to-height ratio

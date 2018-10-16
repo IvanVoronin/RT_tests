@@ -218,7 +218,7 @@ class CogTestRelease:
                         return
                 
                 # break after breaktrials number of trials
-                if trials.thisN > 0 and (trials.thisN % self.breaktrials) == 0:
+                if self.totalN > 0 and (self.totalN % self.breaktrials) == 0:
                     self.make_a_break(self.breaktime)
 
                 self.trial_seq += 1
@@ -336,14 +336,20 @@ class CogTestRelease:
         self.suspend(wait=None)
 
     def make_a_break(self, breaktime):
-        for i in reversed(range(breaktime)):
+        for i in reversed(range(breaktime - 1)):
             note = visual.TextStim(self.test_screen, text=u'\
 Передышка!\n\
-Тест продолжится через %d секунд' %(i),
+Тест продолжится через %d секунд' % (i + 1),
                                    pos=[0, 0], color='black')
             note.draw()
             self.test_screen.flip()
             core.wait(1)
+        note = visual.TextStim(self.test_screen,
+                               text=u'Тест сейчас продолжится, приготовься!',
+                               pos=[0, 0], color='black')
+        note.draw()
+        self.test_screen.flip()
+        core.wait(2)
     
     # You are welcome to change this for CogTest instances
     # Here you define the screen outlook

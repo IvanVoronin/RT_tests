@@ -19,6 +19,7 @@ bash/cmd: `python launch.py`
 * Аналогичная логика применяется в ситуации, когда респондент дает несколько невалидных ответов подряд (по умолчанию 10). Невалидным ответом, в частности, является преждевременный ответ.
 * Чтобы снизить утомление респондентов - это школьники - тест прерывается короткими паузами (по умолчанию каждые 40 проб, длительность паузы составляет 6с).
 * По каждой пробе, по тесту и по батарее в целом записывается подробная информация (временная отметка, статус выполнения). Программа также пишет логи и спецификацию компьютера (характеристики процессора, рабочей памяти и экрана).
+* Общее время выполнения батареи ограничено заранее установленным значением (по умолчанию 90 минут).
 4. Скрипт `test_summary.py` собирает и записывает характеристики тестов, вошедших в тестовую батарею, в том числе общее количество проб.
 5. Пользователь может выбрать прохождение полной или демо-версии теста. Демо-версия включает по 20 проб в каждом тесте, не считая тренировочную серию.
 
@@ -73,6 +74,7 @@ This battery aims to serve as a selfcontained software to be used for assessment
 * The logic applies when participant gives a sequence of invalid answers (e.g., preterm responses), 10 by default.
 * At regular intervals (each 40 trials by default) the test pauses to let a participant have a short break (6s by default).
 * For each trial within the test and for the whole battery the detailed information is recorded (timestamp, execution status). The script also writes the log and computer specifications (CPU, RAM, screen resolution).
+* There is a preset limit on the total execution time (90 min by default).
 4. The script `test_summary.py` gathers specifications of test battery, including total number of trials.
 5. The user can choose to pass either full or demo version of the test battery. Demo version сuts number of trials in ach test to 20 (let alone training session that remains unchanged).
 

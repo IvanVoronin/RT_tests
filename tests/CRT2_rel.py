@@ -10,7 +10,7 @@ import os
 
 class CRT2_rel (CogTestRelease):
     name = 'CRT2_rel'
-    nreps = 30         # number of repeats within each trial dictionary
+    nreps = 20         # number of repeats within each trial dictionary
 
     mintrain = 7       # minimum number of training trials
     maxtrain = 20      # maximum number of training trials
@@ -21,8 +21,12 @@ class CRT2_rel (CogTestRelease):
     # (key on a keyboard)
     trial_dict = OrderedDict(
         [('training', [{'target': 'left', 'cor_resp': 'd'},
+                       {'target': 'right', 'cor_resp': 'l'},
+                       {'target': 'left', 'cor_resp': 'd'},
                        {'target': 'right', 'cor_resp': 'l'}]),
          ('main',     [{'target': 'left', 'cor_resp': 'd'},
+                       {'target': 'right', 'cor_resp': 'l'},
+                       {'target': 'left', 'cor_resp': 'd'},
                        {'target': 'right', 'cor_resp': 'l'}])])
 
     # You are welcome to change this for CogTest instances
@@ -82,12 +86,12 @@ class CRT2_rel (CogTestRelease):
                                       wrapWidth=1.8*self.test_screen.size[0],
                                       pos=[0, 0.35*self.test_screen.size[1]],
                                       text=u'\
-Положи руки на стол, чтобы указательные пальцы располагались на клавишах L и D\n\
-Нажми и удерживай клавиши L и D, чтобы крестик в середине экрана стал зеленый\n\
-В одном из кругов появится белая точка\n\
-Если точка появилась в ПРАВОМ круге, как можно быстрее отпусти L\n\
-Если точка появилась в ЛЕВОМ круге, как можно быстрее отпусти D\n\
-В начале будет серия тренировочных попыток\n\
+Положи руки на стол, чтобы указательные пальцы располагались на клавишах L и D.\n\
+Нажми и удерживай клавиши L и D, чтобы крестик в середине экрана стал зеленый.\n\
+В одном из кругов появится белая точка.\n\
+Если точка появилась в ПРАВОМ круге, как можно быстрее отпусти L.\n\
+Если точка появилась в ЛЕВОМ круге, как можно быстрее отпусти D.\n\
+В начале будет серия тренировочных попыток.\n\
 \n\
 Для продолжения нажми любую клавишу')
         # This is screen width-to-height ratio

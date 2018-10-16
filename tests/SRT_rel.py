@@ -6,9 +6,10 @@ from psychopy import visual
 from collections import OrderedDict
 import os
 
+
 class SRT_rel (CogTestRelease):
     name = 'SRT_rel'
-    nreps = 60
+    nreps = 80
 
     trial_dict = OrderedDict(
         [('training', [{'target': 'center', 'cor_resp': ' '}]),
@@ -34,10 +35,10 @@ class SRT_rel (CogTestRelease):
                                       wrapWidth=1.8*self.test_screen.size[0],
                                       pos=[0, 0.35*self.test_screen.size[1]],
                                       text=u'\
-Положи руку на стол, чтобы большой палец располагался на клавише ПРОБЕЛ\n\
-Нажми и удерживай ПРОБЕЛ, чтобы круг стал зеленый\
-Как только в центре круга появится белая точка, как можно быстрее отпусти ПРОБЕЛ\n\
-В начале будет серия тренировочных попыток\n\
+Положи руку на стол, чтобы большой палец располагался на клавише ПРОБЕЛ.\n\
+Нажми и удерживай ПРОБЕЛ, чтобы круг стал зеленый.\n\
+Как только в центре круга появится белая точка, как можно быстрее отпусти ПРОБЕЛ.\n\
+В начале будет серия тренировочных попыток.\n\
 \n\
 Для продолжения нажми любую клавишу')
         # This is screen width-to-height ratio
