@@ -218,7 +218,7 @@ https://github.com/IvanVoronin/RT_tests
         current_dur = test.end_time - START_TIME
         if current_dur.seconds/60.0 > TIME_LIMIT:
             skip_the_rest = True
-
+            log.write('TIME LIMIT REACHED\n')
 
     END_TIME = datetime.now()
 
