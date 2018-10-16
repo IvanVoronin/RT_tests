@@ -9,7 +9,7 @@ import os
 
 class SRT (CogTest):
     name = 'SRT'
-    nreps = 120         # number of repeats within each trial dictionary
+    nreps = 60         # number of repeats within each trial dictionary
 
     # This is trial dictionary passed to data.TrialHandler
     # Must contain training series

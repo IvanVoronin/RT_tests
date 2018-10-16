@@ -10,7 +10,7 @@ import os
 
 class CRT4 (CogTest):
     name = 'CRT4'
-    nreps = 30
+    nreps = 20
 
     mintrain = 7       # minimum number of training trials
     maxtrain = 20      # maximum number of training trials

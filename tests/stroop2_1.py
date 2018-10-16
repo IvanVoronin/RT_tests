@@ -21,7 +21,7 @@ import os
 
 class stroop2_1 (CogTest):
     name = 'stroop2_1'
-    nreps = 60          # number of repeats within each trial dictionary
+    nreps = 40          # number of repeats within each trial dictionary
 
     mintrain = 10       # minimum number of training trials
     maxtrain = 30       # maximum number of training trials

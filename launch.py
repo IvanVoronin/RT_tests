@@ -10,7 +10,7 @@ import psychopy
 import wx
 from datetime import datetime
 from psychopy import gui, core
-from testlist import test_battery
+from testlist import test_battery, TIME_LIMIT
 from setup_console import setup_console
 from multiprocessing import freeze_support
 from psychopy import logging
@@ -62,10 +62,13 @@ def launch():
     intro = u'''
 Спасибо, что согласились поучаствовать в исследовании времени реакции!
 
-Предлагаю Вам пройти набор тестов, в которых нужно как можно быстрее и точнее \
+Предлагаю Вам пройти набор тестов, в которых нужно как можно быстрее и точнее
 реагировать на стимулы (изображения или слова).
 
-Время выполнения заданий составляет ~15 минут в демо-версии и ~60 минут в полной версии. \
+Время выполнения заданий составляет ~20 минут в демо-версии и ~90 минут в полной версии. 
+В тесте установлено общее ограничение времени 90 минут. Тест можно прервать во время демонстрации
+или между тренировочной и основной сериями, нажав кнопку Y.\
+
 Перед началом тестов программа соберет информацию о характеристиках Вашего компьютера:
     - Название операционной системы
     - Тип процессора
@@ -145,7 +148,6 @@ https://github.com/IvanVoronin/RT_tests
 
     # Log the warnings
     # TODO: Log in-test warnings, log interruptions, pauses and demonstrations
-    # TODO: Log test specifications
     logging.console.setLevel(logging.WARNING)
     log = logging.LogFile('data/' + out_dir + '/log.log',
                           level=logging.INFO, filemode='w')
@@ -184,10 +186,13 @@ https://github.com/IvanVoronin/RT_tests
         specs.write('Battery ID: %s\n' % BATTERY_ID)
 
     # Run the tests, collect stats
+    skip_the_rest = False
     for test in test_battery.itervalues():
-        log.write('\n======================================================================\n'
-                + 'STARTING ' + test.name + '\n')
+        if skip_the_rest:
+            test.status = 'skipped'
         if test.status != 'skipped':
+            log.write('\n======================================================================\n'
+                      + 'STARTING ' + test.name + '\n')
             try:
                 test.start(out_dir, mode=test_mode,
                            test_screen=test_screen)
@@ -195,22 +200,25 @@ https://github.com/IvanVoronin/RT_tests
                 test.status = 'failed'
                 test.end_time = datetime.now()
                 log.write('SOMETHING HAPPENED!\n')
-                logging.flush()
                 # If something went wrong we open the test screen again
                 # FIXME: Probably not working as expected
                 if test_screen not in locals() or test_screen._closed:
+                    log.write('OPENING A NEW WINDOW\n')
                     test_screen = psychopy.visual.Window(fullscr=True, units='pix',
                                                          monitor=0, winType='pyglet')
                     test_screen.winHandle.activate()
                     test_screen.mouseVisible = False
-                    logging.flush()
+                logging.flush()
+            log.write('FINISHING ' + test.name
+                      + '\n======================================================================\n')
         else:
             test.start_time = datetime.now()
             test.end_time = datetime.now()
             log.write(test.name + ' SKIPPED\n')
-        logging.flush()
-        log.write('FINISHING ' + test.name
-                + '\n======================================================================\n')
+        current_dur = test.end_time - START_TIME
+        if current_dur.seconds/60.0 > TIME_LIMIT:
+            skip_the_rest = True
+
 
     END_TIME = datetime.now()
 

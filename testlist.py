@@ -6,6 +6,9 @@ from tests import SRT, CRT2, CRT4, VerbCRT
 from tests import stroop2_1, stroop2_2, stroop3_1, stroop3_2
 from tests import VisCRT, SRT_rel, CRT2_rel
 
+# Total time limit
+TIME_LIMIT = 90
+
 # This is the list of the tests to launch
 test_battery = OrderedDict([
     ('SRT', SRT.SRT()),
@@ -20,4 +23,3 @@ test_battery = OrderedDict([
     ('SRT_rel',  SRT_rel.SRT_rel()),
     ('CRT2_rel', CRT2_rel.CRT2_rel())])
 
-# TODO: Gather statistics about number of trials and test duration

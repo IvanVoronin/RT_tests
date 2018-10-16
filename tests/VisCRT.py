@@ -71,9 +71,9 @@ for i in trial_dict2:
 
 class VisCRT (CogTest):
     name = 'VisCRT'
-    nreps = 2           # number of repeats within each trial dictionary
+    nreps = 1           # number of repeats within each trial dictionary
 
-    maxtrials = 120     # maximum number of trials in the main test
+    maxtrials = 1000     # maximum number of trials in the main test
     mintrain = 10       # minimum number of training trials
     maxtrain = 30       # maximum number of training trials
 
