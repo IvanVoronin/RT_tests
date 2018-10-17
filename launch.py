@@ -174,7 +174,7 @@ https://github.com/IvanVoronin/RT_tests
         specs.write('Machine: %s\n' % platform.machine())
         specs.write('Processor: %s\n' % platform.processor())
         specs.write('Number of CPUs: %d\n' % psutil.cpu_count(logical=False))
-        specs.write('Available CPUs: %d\n' % len(psutil.Process().cpu_affinity()))
+        # specs.write('Available CPUs: %d\n' % len(psutil.Process().cpu_affinity()))
         specs.write('Current CPU load: %0.1f%%\n' % psutil.cpu_percent())
         specs.write('Total RAM: %dMb\n' % int(psutil.virtual_memory().total / (1024 * 1024)))
         specs.write('Available RAM: %dMb\n' % int(psutil.virtual_memory().available / (1024 * 1024)))
