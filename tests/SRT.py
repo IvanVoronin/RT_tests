@@ -108,4 +108,6 @@ class SRT (CogTest):
 if __name__ == '__main__':
     if not os.access('data', os.F_OK):
         os.mkdir('data')
+    if not os.access('data/test', os.F_OK):
+        os.mkdir('data/test')
     SRT().start('test', u'Демо')

@@ -211,4 +211,6 @@ class stroop3_2 (CogTest):
 if __name__ == '__main__':
     if not os.access('data', os.F_OK):
         os.mkdir('data')
+    if not os.access('data/test', os.F_OK):
+        os.mkdir('data/test')
     stroop3_2().start('test', u'Демо')

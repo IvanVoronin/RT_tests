@@ -8,6 +8,7 @@ import psutil
 import platform
 import psychopy
 import wx
+import traceback
 from datetime import datetime
 from psychopy import gui, core
 from testlist import test_battery, TIME_LIMIT
@@ -117,6 +118,7 @@ https://github.com/IvanVoronin/RT_tests
     for i in test_battery.keys():
         info_dlg.addField(i, True)
 
+    # TODO: Make a separate window
     info_dlg.addText(u'\nНе забудьте включить английскую расскладку клавиатуры!\n')
     info_dlg.show()
 
@@ -161,31 +163,34 @@ https://github.com/IvanVoronin/RT_tests
     test_screen.winHandle.activate()
     test_screen.mouseVisible = False
 
-    screen_size = test_screen.size
-    fps = test_screen.getActualFrameRate()
-    frame_duration = test_screen.getMsPerFrame()
+    try:
+        screen_size = test_screen.size
+        fps = test_screen.getActualFrameRate()
+        frame_duration = test_screen.getMsPerFrame()
+        test_screen.flip()
+
+        # Gather system information
+        with open('data/' + out_dir + '/specs.txt', mode='w') as specs:
+            specs.write('Platform: %s\n' % platform.platform())
+            specs.write('Machine: %s\n' % platform.machine())
+            specs.write('Processor: %s\n' % platform.processor())
+            specs.write('Number of CPUs: %d\n' % psutil.cpu_count(logical=False))
+            specs.write('Available CPUs: %d\n' % len(psutil.Process().cpu_affinity()))
+            specs.write('Current CPU load: %0.1f%%\n' % psutil.cpu_percent())
+            specs.write('Total RAM: %dMb\n' % int(psutil.virtual_memory().total / (1024 * 1024)))
+            specs.write('Available RAM: %dMb\n' % int(psutil.virtual_memory().available / (1024 * 1024)))
+            specs.write('Screen size: %dx%d\n' % tuple(screen_size))
+            specs.write('FPS: %0.1f\n' % fps)
+            specs.write('Frame duration: mean=%0.1fms, SD=%0.1fms, median=%0.1fms\n' % frame_duration)
+            specs.write('Python version: %s\n' % platform.python_version())
+            specs.write('Python implementation: %s\n' % platform.python_implementation())
+            specs.write('PsychoPy version: %s\n' % psychopy.__version__)
+            specs.write('Battery version: %s\n' % VERSION)
+            specs.write('Battery ID: %s\n' % BATTERY_ID)
+    except Exception as e:
+        log.write('EXCEPTION: %s\n' % e)
 
     logging.flush()
-    test_screen.flip()
-
-    # Gather system information
-    with open('data/' + out_dir + '/specs.txt', mode='w') as specs:
-        specs.write('Platform: %s\n' % platform.platform())
-        specs.write('Machine: %s\n' % platform.machine())
-        specs.write('Processor: %s\n' % platform.processor())
-        specs.write('Number of CPUs: %d\n' % psutil.cpu_count(logical=False))
-        # specs.write('Available CPUs: %d\n' % len(psutil.Process().cpu_affinity()))
-        specs.write('Current CPU load: %0.1f%%\n' % psutil.cpu_percent())
-        specs.write('Total RAM: %dMb\n' % int(psutil.virtual_memory().total / (1024 * 1024)))
-        specs.write('Available RAM: %dMb\n' % int(psutil.virtual_memory().available / (1024 * 1024)))
-        specs.write('Screen size: %dx%d\n' % tuple(screen_size))
-        specs.write('FPS: %0.1f\n' % fps)
-        specs.write('Frame duration: mean=%0.1fms, SD=%0.1fms, median=%0.1fms\n' % frame_duration)
-        specs.write('Python version: %s\n' % platform.python_version())
-        specs.write('Python implementation: %s\n' % platform.python_implementation())
-        specs.write('PsychoPy version: %s\n' % psychopy.__version__)
-        specs.write('Battery version: %s\n' % VERSION)
-        specs.write('Battery ID: %s\n' % BATTERY_ID)
 
     # Run the tests, collect stats
     skip_the_rest = False
@@ -195,6 +200,7 @@ https://github.com/IvanVoronin/RT_tests
         if test.status != 'skipped':
             log.write('\n======================================================================\n'
                       + 'STARTING ' + test.name + '\n')
+            exc_info = sys.exc_info()
             try:
                 test.start(out_dir, mode=test_mode,
                            test_screen=test_screen)
@@ -202,7 +208,8 @@ https://github.com/IvanVoronin/RT_tests
                 test.status = 'failed'
                 test.end_time = datetime.now()
                 log.write('SOMETHING HAPPENED!\n')
-                log.write('EXCEPTION: %s' % e)
+                log.write('EXCEPTION: %s\n' % e)
+                logging.flush()
                 # If something went wrong we open the test screen again
                 # FIXME: Probably not working as expected
                 if test_screen not in locals() or test_screen._closed:
@@ -213,7 +220,10 @@ https://github.com/IvanVoronin/RT_tests
                                                          monitor=0, winType='pyglet')
                     test_screen.winHandle.activate()
                     test_screen.mouseVisible = False
-                logging.flush()
+                    logging.flush()
+            finally:
+                log.write(traceback.format_exc(exc_info))
+                del exc_info
             log.write('FINISHING ' + test.name
                       + '\n======================================================================\n')
         else:

@@ -293,8 +293,6 @@ class VisCRT (CogTest):
     def show_trial_screen(self):    
         # Hint
         if self.vars['series'] == 'training':
-#            self.trial_stimuli['hint_cue1'].draw()
-#            self.trial_stimuli['hint_cue2'].draw()
             self.trial_stimuli['hint_D'].draw()
             self.trial_stimuli['hint_L'].draw()
 
@@ -382,4 +380,6 @@ class VisCRT (CogTest):
 if __name__ == '__main__':
     if not os.access('data', os.F_OK):
         os.mkdir('data')
+    if not os.access('data/test', os.F_OK):
+        os.mkdir('data/test')
     VisCRT().start('test', u'Демо')
