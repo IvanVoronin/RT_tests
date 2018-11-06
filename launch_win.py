@@ -9,6 +9,7 @@ import platform
 import psychopy
 import wx
 import traceback
+import win32api
 from datetime import datetime
 from psychopy import gui, core
 from testlist import test_battery, TIME_LIMIT
@@ -119,13 +120,12 @@ def launch():
 В начале каждого теста будет инструкция и серия тренировочных попыток.
 Прежде чем начинать тест внимательно прочитай инструкцию и посмотри,
 как положить руку на клавиатуру.
-
-Не забудь включить английскую раскладку клавиатуры''' % u'согласился' if sex == u'Мужской' else u'согласилась'
+    ''' % u'согласился' if sex == u'Мужской' else u'согласилась'
 
     app = wx.App()
     intro_dlg = wx.MessageDialog(None,
                                  intro, u'Добро пожаловать в эксперимент',
-                                 wx.OK_DEFAULT | wx.CANCEL | wx.OK | wx.ALIGN_LEFT
+                                 wx.OK_DEFAULT | wx.OK | wx.ALIGN_LEFT
                                  | wx.ICON_INFORMATION)
 
     resp = intro_dlg.ShowModal()
@@ -148,6 +148,7 @@ def launch():
                                          monitor=0, winType='pyglet')
     test_screen.winHandle.activate()
     test_screen.mouseVisible = False
+    win32api.LoadKeyboardLayout('00000409', 1)
 
     try:
         instr = u'''

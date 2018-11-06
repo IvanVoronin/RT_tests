@@ -7,7 +7,7 @@ from tests import stroop2_1, stroop2_2, stroop3_1, stroop3_2
 from tests import VisCRT, SRT_rel, CRT2_rel
 
 # Total time limit
-TIME_LIMIT = 180
+TIME_LIMIT = 45
 
 # This is the list of the tests to launch
 test_battery = OrderedDict([
@@ -17,9 +17,10 @@ test_battery = OrderedDict([
     ('VerbCRT', VerbCRT.VerbCRT()),
     ('stroop2_1',  stroop2_1.stroop2_1()),
     ('stroop2_2',  stroop2_2.stroop2_2()),
-    ('stroop3_1',  stroop3_1.stroop3_1()),
-    ('stroop3_2',  stroop3_2.stroop3_2()),
-    ('VisCRT', VisCRT.VisCRT()),
-    ('SRT_rel',  SRT_rel.SRT_rel()),
-    ('CRT2_rel', CRT2_rel.CRT2_rel())])
+#    ('stroop3_1',  stroop3_1.stroop3_1()),
+#    ('stroop3_2',  stroop3_2.stroop3_2()),
+    ('VisCRT', VisCRT.VisCRT())
+#    ('SRT_rel',  SRT_rel.SRT_rel()),
+#    ('CRT2_rel', CRT2_rel.CRT2_rel())
+    ])
 
