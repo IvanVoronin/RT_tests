@@ -9,6 +9,7 @@ import platform
 import psychopy
 import wx
 import traceback
+import codecs
 from datetime import datetime
 from psychopy import gui, core
 from testlist import test_battery, TIME_LIMIT
@@ -47,11 +48,11 @@ def launch():
 
     if os.path.isfile('data/participants.csv'):
         try:
-            out_file = open('data/participants.csv', mode='a')
+            out_file = codecs.open('data/participants.csv', mode='a', encoding='utf-8')
         except:
             print('The directory is not writable, cannot write the data')
     else:
-        out_file = open('data/participants.csv', mode='w')
+        out_file = codecs.open('data/participants.csv', mode='w', encoding='utf-8')
         out_file.write('test_mode;id;name;age;sex;status;start_time;end_time;')
         for i in test_battery:
             out_file.write(i + '_status;' + \
@@ -67,6 +68,9 @@ def launch():
     info_dlg.addField(u'Дата рождения:', u'01.01.1995')
     info_dlg.addField(u'Пол:', choices=[u'Женский',
                                         u'Мужской'])
+    info_dlg.addField(u'Какой рукой ты пишешь?',
+                      choices=[u'Правой',
+                               u'Левой'])
 
 #    info_dlg.addField(u'Режим теста:', choices=[u'Демо',
 #                                                u'Полный'])
@@ -87,7 +91,7 @@ def launch():
         sys.exit(0)
 
     START_TIME = datetime.now()
-    (ID, name, age, sex) = info_dlg.data
+    (ID, name, age, sex, handedness) = info_dlg.data
 
 #    START_TIME = datetime.now()
 #    (ID, name, age, sex, test_mode, agr), run_tests = \
@@ -114,18 +118,17 @@ def launch():
     intro = u'''
 Спасибо, что %s поучаствовать в эксперименте на скорость реакции!
 
-Эксперимент состоит из нескольких тестов разной сложности.
-В каждом тесте надо отвечать как можно быстрее и как можно точнее.
-В начале каждого теста будет инструкция и серия тренировочных попыток.
-Прежде чем начинать тест внимательно прочитай инструкцию и посмотри,
-как положить руку на клавиатуру.
-
-Не забудь включить английскую раскладку клавиатуры''' % u'согласился' if sex == u'Мужской' else u'согласилась'
+Эксперимент состоит из нескольких тестов разной сложности. \
+В каждом тесте надо отвечать как можно быстрее и как можно точнее. \
+В начале каждого теста будет инструкция и серия тренировочных попыток. \
+Прежде чем начинать тест, внимательно прочитай инструкцию и посмотри, \
+как положить руку на клавиатуру.''' \
+            % (u'согласился' if sex == u'Мужской' else u'согласилась').decode('utf-8')
 
     app = wx.App()
     intro_dlg = wx.MessageDialog(None,
                                  intro, u'Добро пожаловать в эксперимент',
-                                 wx.OK_DEFAULT | wx.CANCEL | wx.OK | wx.ALIGN_LEFT
+                                 wx.OK_DEFAULT | wx.OK | wx.ALIGN_LEFT
                                  | wx.ICON_INFORMATION)
 
     resp = intro_dlg.ShowModal()
