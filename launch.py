@@ -10,7 +10,7 @@ import psychopy
 import wx
 import traceback
 #import codecs
-import win32api
+#import win32api
 from datetime import datetime
 from psychopy import gui, core
 from testlist import test_battery, TIME_LIMIT
@@ -123,7 +123,7 @@ def launch():
 Эксперимент состоит из нескольких тестов разной сложности. \
 В каждом тесте надо отвечать как можно быстрее и как можно точнее. \
 В начале каждого теста будет инструкция и серия тренировочных попыток. \
-Прежде чем начинать тест, внимательно прочитай инструкцию и посмотри, \
+Прежде чем начинать тест, внимательно прочти инструкцию и посмотри, \
 как положить руку на клавиатуру.''' \
             % (u'согласился' if sex == u'Мужской' else u'согласилась').decode('utf-8')
 
@@ -153,7 +153,7 @@ def launch():
                                          monitor=0, winType='pyglet')
     test_screen.winHandle.activate()
     test_screen.mouseVisible = False
-    win32api.LoadKeyboardLayout('00000409', 1)
+#    win32api.LoadKeyboardLayout('00000409', 1)
 
     try:
         instr = u'''
