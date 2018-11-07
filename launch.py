@@ -9,7 +9,8 @@ import platform
 import psychopy
 import wx
 import traceback
-import codecs
+#import codecs
+import win32api
 from datetime import datetime
 from psychopy import gui, core
 from testlist import test_battery, TIME_LIMIT
@@ -19,6 +20,7 @@ from psychopy import logging
 
 VERSION = 'v0.1'
 BATTERY_ID = 'RT_tests_45min_2018'
+
 
 
 def launch():
@@ -48,11 +50,11 @@ def launch():
 
     if os.path.isfile('data/participants.csv'):
         try:
-            out_file = codecs.open('data/participants.csv', mode='a', encoding='utf-8')
+            out_file = open('data/participants.csv', mode='a')
         except:
             print('The directory is not writable, cannot write the data')
     else:
-        out_file = codecs.open('data/participants.csv', mode='w', encoding='utf-8')
+        out_file = open('data/participants.csv', mode='w')
         out_file.write('test_mode;id;name;age;sex;status;start_time;end_time;')
         for i in test_battery:
             out_file.write(i + '_status;' + \
@@ -151,6 +153,7 @@ def launch():
                                          monitor=0, winType='pyglet')
     test_screen.winHandle.activate()
     test_screen.mouseVisible = False
+    win32api.LoadKeyboardLayout('00000409', 1)
 
     try:
         instr = u'''

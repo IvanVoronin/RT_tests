@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import codecs
+#import codecs
 from psychopy import visual, iohub, data, core, logging
 from numpy import random
 from datetime import datetime
@@ -127,7 +127,7 @@ class CogTest:
                 
         # Make output folder
         DATA_FILE = 'data/' + data_folder + '/' + self.name + '.csv'
-        self.data_file = codecs.open(DATA_FILE, mode='w')
+        self.data_file = open(DATA_FILE, mode='w')
         self.data_file.write(';'.join(self.varnames) + '\n')
 
         self.test_screen = test_screen
