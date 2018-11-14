@@ -9,8 +9,8 @@ import platform
 import psychopy
 import wx
 import traceback
-#import codecs
-#import win32api
+import win32api
+import win32con
 from datetime import datetime
 from psychopy import gui, core
 from testlist import test_battery, TIME_LIMIT
@@ -20,7 +20,6 @@ from psychopy import logging
 
 VERSION = 'v0.1'
 BATTERY_ID = 'RT_tests_45min_2018'
-
 
 
 def launch():
@@ -74,17 +73,6 @@ def launch():
                       choices=[u'Правой',
                                u'Левой'])
 
-#    info_dlg.addField(u'Режим теста:', choices=[u'Демо',
-#                                                u'Полный'])
-
-#    info_dlg.addField(u'Я согласен/согласна участвовать', True)
-
-#    info_dlg.addText(u'\nВыберите тесты для выполнения')
-#    for i in test_battery.keys():
-#        info_dlg.addField(i, True)
-
-    # TODO: Make a separate window
-#    info_dlg.addText(u'\nНе забудьте включить английскую расскладку клавиатуры!\n')
     info_dlg.show()
 
     if not info_dlg.OK:
@@ -95,26 +83,12 @@ def launch():
     START_TIME = datetime.now()
     (ID, name, age, sex, handedness) = info_dlg.data
 
-#    START_TIME = datetime.now()
-#    (ID, name, age, sex, test_mode, agr), run_tests = \
-#        info_dlg.data[0:6], info_dlg.data[6:]
-
-#    if not agr:
-#        core.wait(1)
-#        core.quit()
-#        sys.exit(0)
-
-    out_file.write(#test_mode + ';' +
-                   ID + ';' +
+    out_file.write(ID + ';' +
                    name + ';' +
                    str(age) + ';' +
                    sex + ';')
     out_dir = START_TIME.strftime('%Y-%m-%d_%H%M__') + str(ID)
     os.mkdir('data/' + out_dir)
-
-#    for test, run in zip(test_battery.values(), run_tests):
-#        if not run:
-#            test.status = 'skipped'
 
     # Showing information dialog
     intro = u'''
@@ -143,26 +117,24 @@ def launch():
     # TODO: Log in-test warnings, log interruptions, pauses and demonstrations
     logging.console.setLevel(logging.WARNING)
     log = logging.LogFile('data/' + out_dir + '/log.log',
-                          level=logging.INFO, filemode='w')
+                          level=logging.INFO, filemode='w',
+                          encoding='utf8')
 
     # The same window can be shared by tests
     # Here you can put window specifications
     test_screen = psychopy.visual.Window(size=(1024, 768),
-                                         fullscr=True,
+                                         fullscr=False,
                                          units='pix',
                                          monitor=0, winType='pyglet')
     test_screen.winHandle.activate()
     test_screen.mouseVisible = False
-#    win32api.LoadKeyboardLayout('00000409', 1)
+    win32api.LoadKeyboardLayout('00000409', win32con.KLF_ACTIVATE | win32con.KLF_REORDER)
+    # FIXME: This still not working when each app has its own keyboard layout
 
     try:
-        instr = u'''
-
-        '''
-
         screen_size = test_screen.size
         fps = test_screen.getActualFrameRate()
-        frame_duration = test_screen.getMsPerFrame(msg=instr)
+        frame_duration = test_screen.getMsPerFrame(msg=u'Тест сейчас начнётся')
         test_screen.flip()
 
         # Gather system information
@@ -189,6 +161,8 @@ def launch():
     logging.flush()
 
     # Run the tests, collect stats
+    # TODO: Remove opening test screen after failure
+    # TODO: Introduce total interruption
     skip_the_rest = False
     for test in test_battery.itervalues():
         if skip_the_rest:
@@ -216,6 +190,7 @@ def launch():
                                                          monitor=0, winType='pyglet')
                     test_screen.winHandle.activate()
                     test_screen.mouseVisible = False
+                    win32api.LoadKeyboardLayout('00000409', 1)
                     logging.flush()
             finally:
                 log.write(traceback.format_exc(exc_info))
