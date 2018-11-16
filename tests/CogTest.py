@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#import codecs
 from psychopy import visual, iohub, data, core, logging
 from numpy import random
 from datetime import datetime
 from collections import OrderedDict
-import win32api
 
 
 class FinishTest (Exception):
@@ -93,7 +91,6 @@ class CogTest:
             self.test_screen.winHandle.activate()
 
         self.test_screen.mouseVisible = False
-        win32api.LoadKeyboardLayout('00000409', 1)
 
         # Initialize keyboard input
         # FIXME: When iohubConnection is already active, it fails

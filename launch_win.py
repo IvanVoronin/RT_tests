@@ -9,6 +9,8 @@ import platform
 import psychopy
 import wx
 import traceback
+import win32api
+import win32con
 from datetime import datetime
 from psychopy import gui, core
 from testlist import test_battery, TIME_LIMIT
@@ -126,6 +128,8 @@ def launch():
                                          monitor=0, winType='pyglet')
     test_screen.winHandle.activate()
     test_screen.mouseVisible = False
+    win32api.LoadKeyboardLayout('00000409', win32con.KLF_ACTIVATE | win32con.KLF_REORDER)
+    # FIXME: This still not working when each app has its own keyboard layout
 
     try:
         screen_size = test_screen.size
