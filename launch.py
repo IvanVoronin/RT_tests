@@ -121,7 +121,7 @@ def launch():
     # The same window can be shared by tests
     # Here you can put window specifications
     test_screen = psychopy.visual.Window(size=(1024, 768),
-                                         fullscr=False,
+                                         fullscr=True,
                                          units='pix',
                                          monitor=0, winType='pyglet')
     test_screen.winHandle.activate()
