@@ -74,7 +74,7 @@ class VisCRT (CogTest):
     nreps = 1           # number of repeats within each trial dictionary
 
     maxtrials = 1000     # maximum number of trials in the main test
-    mintrain = 10       # minimum number of training trials
+    mintrain = 12       # minimum number of training trials
     maxtrain = 30       # maximum number of training trials
 
     nonresptime = 7     # maximum non-response time (sec)

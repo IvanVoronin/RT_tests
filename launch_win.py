@@ -54,7 +54,7 @@ def launch():
             print('The directory is not writable, cannot write the data')
     else:
         out_file = open('data/participants.csv', mode='w')
-        out_file.write('test_mode;id;name;age;sex;status;start_time;end_time;')
+        out_file.write('id;name;age;sex;status;start_time;end_time;')
         for i in test_battery:
             out_file.write(i + '_status;' + \
                            i + '_start_time;' + \

@@ -10,7 +10,6 @@ import os
 class SRT (CogTest):
     name = 'SRT'
     nreps = 80         # number of repeats within each trial dictionary
-    breaktrials = 10
     # This is trial dictionary passed to data.TrialHandler
     # Must contain training series
     # Each series must contain 'cor_resp' which is correct response
